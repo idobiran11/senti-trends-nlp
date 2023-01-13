@@ -1,7 +1,7 @@
 import requests
 import datetime
 
-API_KEY = 'P5BOlzt1xIFW4USj5SRoN4jl5hYQAAyQ'
+api_key = 'P5BOlzt1xIFW4USj5SRoN4jl5hYQAAyQ'
 SECRET_KEY = 'zkJPCUJiSwFWJ62x'
 
 # Set the search term
@@ -17,3 +17,4 @@ response = requests.get(url)
 
 # Parse the JSON response
 data = response.json()
+print(data)
