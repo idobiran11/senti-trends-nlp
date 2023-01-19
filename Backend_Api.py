@@ -1,5 +1,17 @@
 import requests
 import datetime
+import urllib.request
+from bs4 import BeautifulSoup
+
+class Article:
+    def __init__(self, title, url, source, date):
+        self.title = title
+        self.url = url
+        self.source = source
+        self.date = date
+
+    def get_full_article(self):
+        return
 
 
 class NewYorkTimesAPI:
@@ -17,10 +29,21 @@ class NewYorkTimesAPI:
         data = response.json()
         return data
 
+    def get_articles(self):
+        data = self.make_request()
+        articles = []
+        for i in data['response']['docs']:
+            title = i['headline']['main']
+            url = i['web_url']
+            source = i['source']
+            date = i['pub_date']
+            articles.append(Article(title, url, source, date))
+        return articles
+
 
 if __name__ == '__main__':
-    search_term = input("Enter a search term: ")
-    search_time_backwards_days = int(input("Enter the number of days to search back: "))
+    search_term = "Trump"
+    search_time_backwards_days = 365
     ny_times_api = NewYorkTimesAPI(search_term, search_time_backwards_days)
     data = ny_times_api.make_request()
     print(data)
