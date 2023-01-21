@@ -2,6 +2,7 @@ import datetime
 import urllib.request
 from bs4 import BeautifulSoup
 from pynytimes import NYTAPI
+import pandas as pd
 
 # Being Used:
 SEARCH_FOR = "Trump"
@@ -26,6 +27,8 @@ SECRET_KEY = 'zkJPCUJiSwFWJ62x'
 def main_function(search_term, begin_date, end_date, sources_list, num_articles_per_source):
     newsapi = NYTAPI(API_KEY, parse_dates=True)
     article_dict = {}
+    articles_df = pd.DataFrame(
+        columns=['title', 'url', 'source', 'news_desk', 'type_of_material', 'first_paragraph', 'date'])
     for source in sources_list:
         article_dict[source] = []
         articles = newsapi.article_search(
@@ -48,7 +51,17 @@ def main_function(search_term, begin_date, end_date, sources_list, num_articles_
             news_desk = article['news_desk']
             type_of_material = article['type_of_material']
             article_dict[source].append(Article(title, url, source, news_desk, type_of_material, first_paragraph, date))
+            articles_df = add_to_pandas_dataframe(articles_df, title, url, source, news_desk, type_of_material,
+                                                  first_paragraph, date)
     algorithm(article_dict)
+
+
+def add_to_pandas_dataframe(df, title, url, source, news_desk, type_of_material, first_paragraph, date):
+    df = df.append(
+        {'title': title, 'url': url, 'source': source, 'news_desk': news_desk, 'type_of_material': type_of_material,
+         'first_paragraph': first_paragraph, 'date': date}, ignore_index=True)
+    return df
+
 
 def algorithm(article_dict):
     pass
@@ -63,13 +76,6 @@ class Article:
         self.first_paragraph = first_paragraph
         self.news_desk = news_desk
         self.type_of_material = type_of_material
-
-    @staticmethod
-    def get_full_article(url):
-        html = urllib.request.urlopen(url).read()
-        soup = BeautifulSoup(html, 'html.parser')
-        text = soup.find('section', {'name': 'articleBody'}).get_text()
-        return text
 
 
 if __name__ == '__main__':
