@@ -59,7 +59,7 @@ def main_function(search_term, begin_date, end_date, sources_list, num_articles_
             crnt['text'] = [Article.get_full_article(crnt['url'][0])]
             data = pd.concat([data, pd.DataFrame(data=crnt)],
                              ignore_index=True)
-            f.write(data.to_csv('data/articles.csv', index=False))
+        data.to_csv('data/articles.csv', index=False)
 
     # algorithm(article_dict)
 
