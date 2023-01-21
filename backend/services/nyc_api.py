@@ -2,6 +2,7 @@ import datetime
 from requests import get, request
 from bs4 import BeautifulSoup
 from pynytimes import NYTAPI
+import re
 
 # Being Used:
 SEARCH_FOR = "Trump"
@@ -43,6 +44,8 @@ def main_function(search_term, begin_date, end_date, sources_list, num_articles_
                 "sources": [source]})
         for article_data in articles:
             title = article_data['headline']['print_headline']
+            title = re.sub(r"[^a-zA-Z0-9\s]", "", title)
+
             url = article_data['web_url']
             first_paragraph = article_data['lead_paragraph']
             date = article_data['pub_date']
@@ -50,10 +53,11 @@ def main_function(search_term, begin_date, end_date, sources_list, num_articles_
             type_of_material = article_data['type_of_material']
             article = Article(title, url, source, news_desk,
                               type_of_material, first_paragraph, date)
-            article.get_full_article(url)
-            article_dict[source].append(
-            )
-    algorithm(article_dict)
+            text = article.get_full_article(url)
+            with open(f'articles/{title}.txt', 'w', encoding="utf8") as f:
+                f.write(text)
+
+    # algorithm(article_dict)
 
 
 def algorithm(article_dict):
