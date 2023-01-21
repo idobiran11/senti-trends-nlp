@@ -3,6 +3,7 @@ from requests import get, request
 from bs4 import BeautifulSoup
 from pynytimes import NYTAPI
 import re
+import pandas as pd
 
 # Being Used:
 SEARCH_FOR = "Trump"
@@ -42,20 +43,23 @@ def main_function(search_term, begin_date, end_date, sources_list, num_articles_
                 "sort": "oldest",  # Sort by oldest options
                 # Return articles from the following source
                 "sources": [source]})
-        for article_data in articles:
-            title = article_data['headline']['print_headline']
-            title = re.sub(r"[^a-zA-Z0-9\s]", "", title)
 
-            url = article_data['web_url']
-            first_paragraph = article_data['lead_paragraph']
-            date = article_data['pub_date']
-            news_desk = article_data['news_desk']
-            type_of_material = article_data['type_of_material']
-            article = Article(title, url, source, news_desk,
-                              type_of_material, first_paragraph, date)
-            text = article.get_full_article(url)
-            with open(f'articles/{title}.txt', 'w', encoding="utf8") as f:
-                f.write(text)
+        data = pd.DataFrame(data={}, columns=[
+                            'text', 'title', 'source', 'news_desk', 'type_of_material', 'date', 'url'])
+        crnt = {}
+        for article_data in articles:
+            title = article_data['headline']['main']
+            crnt['title'] = [re.sub(r"[^a-zA-Z0-9\s]", "", title)]
+
+            crnt['url'] = [article_data['web_url']]
+            # first_paragraph = article_data['lead_paragraph']
+            crnt['date'] = [article_data['pub_date']]
+            crnt['news_desk'] = [article_data['news_desk']]
+            crnt['type_of_material'] = [article_data['type_of_material']]
+            crnt['text'] = [Article.get_full_article(crnt['url'][0])]
+            data = pd.concat([data, pd.DataFrame(data=crnt)],
+                             ignore_index=True)
+            f.write(data.to_csv('data/articles.csv', index=False))
 
     # algorithm(article_dict)
 
@@ -79,16 +83,16 @@ def get_webpage(url):
 
 
 class Article:
-    def __init__(self, title, url, source, news_desk, type_of_material, first_paragraph, date):
+    def __init__(self, title, text, url, source, news_desk, type_of_material, date):
+        self.text = text
         self.title = title
         self.url = url
         self.source = source
         self.date = date
-        self.first_paragraph = first_paragraph
         self.news_desk = news_desk
         self.type_of_material = type_of_material
 
-    @staticmethod
+    @ staticmethod
     def get_full_article(url):
         page = get_webpage(url)
         soup = BeautifulSoup(page, 'html.parser')
