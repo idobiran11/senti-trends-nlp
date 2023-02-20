@@ -1,2 +1,4 @@
 requests
 newsapi-python
+bs4
+pynytimes
