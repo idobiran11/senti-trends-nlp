@@ -1,0 +1,98 @@
+title,date,index,neg_s,neu_s,pos_s,compound_s,neg,neu,pos,compound
+Ilhan Omar labeled a 'liar' after claiming she was unaware of 'tropes about Jews and money:' 'Give me a break' - Fox News,2023-01-30T12:00:00Z,0.0,0.0,0.0,0.0,0.0,0.079,0.862,0.059,-0.9202
+"Condemns Kanye, Fuentes, antisemitism...",2023-01-27T21:13:37Z,1.0,0.0,0.0,0.0,0.0,0.085,0.859,0.056,-0.9668
+A handful of Republicans may save Ilhan Omar's committee seat - Fox News,2023-01-30T19:56:00Z,2.0,0.0,0.0,0.0,0.0,0.06,0.889,0.051,-0.4552
+Iran shows off new deadly missile with 'death to Israel' written on it,2023-02-09T16:55:04Z,3.0,0.0,0.0,0.0,0.0,0.142,0.779,0.079,-0.9885
+Israel to send earthquake aid to old foe Syria in a rare example of cooperation between enemy neighbors,2023-02-06T19:20:57Z,4.0,0.03844444444444444,0.4737777777777778,0.043333333333333335,-0.1458666666666667,0.096,0.844,0.061,-0.9629
+"Turkey hit with 7.8 magnitude earthquake, felt across Middle East",2023-02-06T02:23:18Z,5.0,0.0,0.0,0.0,0.0,0.097,0.87,0.033,-0.9231
+New York Times faces billboard campaign from Orthodox Jewish group over ‘crusade’ against religious schools,2023-02-09T17:15:31Z,6.0,0.0,0.0,0.0,0.0,0.083,0.838,0.079,-0.9036
+"Iran blames Israel for drone strike caught on video, threatens retaliation",2023-02-02T14:33:47Z,7.0,0.0,0.0625,0.0,0.0,0.12,0.845,0.035,-0.9943
+"San Francisco Jewish center members 'paralyzed with fear' when man enters, fires gun: video",2023-02-06T00:16:31Z,8.0,0.0,0.0,0.0,0.0,0.157,0.828,0.016,-0.9954
+"Gaetz 'undecided' on removing Omar from Foreign Affairs Committee, says McCarthy 'deserves deference'",2023-01-31T14:47:06Z,9.0,0.0,0.0,0.0,0.0,0.062,0.872,0.066,-0.5058
+Russia warns Israel against providing arms to Ukraine: 'Will lead to an escalation of this crisis',2023-02-01T19:29:47Z,10.0,0.01689473684210526,0.2378421052631579,0.008368421052631579,-0.09023684210526317,0.079,0.867,0.054,-0.9626
+University professor claims school 'colluded' with pro-Israel group after she is accused of 'antisemitism',2023-02-12T23:42:17Z,11.0,0.0,0.0,0.0,0.0,0.094,0.857,0.049,-0.9625
+Schumer plans Israel visit as Netanyahu faces protests over judicial reforms,2023-02-16T15:26:29Z,12.0,0.0204,0.5696000000000001,0.01,-0.13908,0.037,0.929,0.034,0.2247
+"NYT writer says AIPAC, Jewish groups using 'power and influence' to stop US from being tough on Israel",2023-01-25T21:19:06Z,13.0,0.019029411764705878,0.2122058823529412,0.004058823529411765,-0.06313235294117647,0.1,0.853,0.047,-0.9965
+"Israel's foreign minister visits Ukraine, pledges financial aid",2023-02-16T18:45:22Z,14.0,0.004066666666666666,0.11686666666666667,0.012333333333333333,0.06640666666666667,0.054,0.808,0.137,0.9968
+"Jeffries accuses GOP of hypocrisy, antisemitism with move to boot Omar from Foreign Affairs Committee",2023-02-02T17:32:59Z,15.0,0.0,0.0,0.0,0.0,0.077,0.867,0.056,-0.9103
+Nominee who called Biden a ‘senile gaffe machine’ withdrawn by State Department,2023-02-14T23:00:43Z,16.0,0.0,0.0,0.0,0.0,0.096,0.866,0.038,-0.9834
+"SEAN HANNITY: Ilhan Omar ousted from committee because of terrible behavior, anti-Semitic rhetoric",2023-02-03T03:47:35Z,17.0,0.0,0.0,0.0,0.0,0.161,0.804,0.035,-0.9922
+Iran may use Syria earthquake to smuggle arms under the guise of aid: report,2023-02-10T16:00:49Z,18.0,0.0,0.0,0.0,0.0,0.164,0.766,0.069,-0.9975
+"Sen. Hagerty slams Biden plan for Palestine consulate as 'affront' to Israel, 'bizarre' act of diplomacy",2023-02-18T16:33:00Z,19.0,0.0,0.03403846153846154,0.004423076923076924,0.014684615384615383,0.103,0.861,0.035,-0.9957
+House GOP demands probe into ‘antisemitic’ New York exam question's 'revision' of history on Israel,2023-02-02T18:26:20Z,20.0,0.0,0.0,0.0,0.0,0.078,0.851,0.072,-0.9398
+NY Education Commissioner under fire over 'egregious distortions of history' in exam questions about Israel,2023-02-01T21:39:04Z,21.0,0.0,0.0,0.0,0.0,0.072,0.868,0.061,-0.8758
+"Jerusalem synagogue shooting: At least 5 dead after gunman opens fire, Israel police say",2023-01-27T19:50:43Z,22.0,0.008227272727272727,0.03722727272727273,0.0,-0.02166818181818182,0.259,0.693,0.048,-0.9995
+Palestinian teenager fatally shot during Israeli army raid in West Bank,2023-02-14T19:35:38Z,23.0,0.0,0.0,0.0,0.0,0.127,0.856,0.017,-0.9915
+Israel attacks Iranian targets in Syria as shadow war heats up between the two adversaries: report,2023-02-19T19:10:05Z,24.0,0.023043478260869565,0.09669565217391306,0.010695652173913044,-0.04114782608695653,0.129,0.809,0.062,-0.9962
+"Israel prison reforms would block convicted terrorists from making their own bread, cut shower times: report",2023-02-20T14:23:03Z,25.0,0.0,0.0,0.0,0.0,0.144,0.788,0.067,-0.998
+Virginia Dems killed measures aimed at combatting antisemitism — just before Holocaust Remembrance Day,2023-02-02T22:57:30Z,26.0,0.0,0.0,0.0,0.0,0.09,0.859,0.052,-0.9935
+"Omar shares death threat on Twitter before House vote, blames GOP for 'continued targeting of women of color",2023-02-02T12:23:51Z,27.0,0.0,0.0,0.0,0.0,0.073,0.851,0.076,0.4669
+Israeli protesters take to streets to blast Netanyahu 'judicial reforms' as PM calls for unity,2023-02-13T20:23:46Z,28.0,0.01587179487179487,0.3026153846153846,0.014846153846153846,-0.02053333333333333,0.079,0.852,0.068,-0.8159
+"Israeli officials double down on settlement construction, rebuke US criticism",2023-02-14T22:53:15Z,29.0,0.0205625,0.149125,0.017812500000000002,-0.033368749999999996,0.097,0.806,0.097,-0.8509
+Gaza residents speak of Hamas’ brutality amid desires for peace in the region,2023-02-13T07:00:12Z,30.0,0.0,0.0,0.0,0.0,0.128,0.789,0.083,-0.9982
+Israeli forces kill 5 Palestinians linked to the Islamic militant group Hamas in West Bank raid,2023-02-06T17:49:11Z,31.0,0.01245,0.035449999999999995,0.0021000000000000003,-0.045005,0.145,0.829,0.025,-0.9984
+"Palestinian rams car into crowded bus stop, killing 2 people including a 6-year-old",2023-02-10T15:12:17Z,32.0,0.010368421052631579,0.04226315789473684,0.0,-0.05106315789473684,0.2,0.785,0.015,-0.9993
+Israeli troops kill Palestinian teen in army raid in occupied West Bank,2023-02-07T13:31:20Z,33.0,0.0,0.0,0.0,0.0,0.22,0.764,0.016,-0.9987
+Ilhan Omar claims House Republicans are exacting 'vengeance' for 'their master' Trump,2023-02-02T03:15:58Z,34.0,0.0,0.0,0.0,0.0,0.074,0.874,0.053,-0.9424
+Israel aircraft strikes rocket production workshop in Gaza Strip,2023-02-02T13:30:55Z,35.0,0.0,0.0,0.0,0.0,0.22,0.728,0.052,-0.9987
+"Tensions rise as Iran threatens Israel, reveals new underground airbase",2023-02-08T15:57:32Z,36.0,0.00375,0.0549375,0.0038125,0.0016125,0.118,0.816,0.066,-0.9922
+Israeli police foil drone assassination attempt in gangland hit,2023-01-20T18:14:30Z,37.0,0.00865,0.0398,0.00155,-0.039529999999999996,0.148,0.784,0.067,-0.9933
+Iran suffers drone strike days after US and Israel launched joint military drill in the region,2023-01-29T10:03:28Z,38.0,0.013481481481481481,0.055851851851851854,0.004740740740740741,-0.053455555555555555,0.106,0.83,0.063,-0.9945
+"Israel intercepts rocket from Gaza Strip, raises tensions under country's new ultranationalist government",2023-02-01T18:26:46Z,39.0,0.0,0.0,0.0,0.0,0.162,0.791,0.047,-0.9907
+"Israel's West Bank population reaches over 500K, settlers predict faster population growth with new government",2023-02-02T13:46:17Z,40.0,0.0,0.0,0.0,0.0,0.072,0.852,0.076,-0.78
+Watchdog slams NYT for 'spreading lies' by employing journalist accused of defending terrorist groups,2023-02-18T19:21:49Z,41.0,0.0,0.0,0.0,0.0,0.128,0.837,0.035,-0.9973
+District administrator calls for 'privileged white voices' to be dismissed from curriculum plans in California,2023-01-22T14:00:37Z,42.0,0.0,0.0,0.0,0.0,0.041,0.915,0.043,-0.5609
+Ilhan Omar gets the boot: House votes her off Foreign Affairs Committee as Democrats cite ‘racism’,2023-02-02T17:31:08Z,43.0,0.0,0.0,0.0,0.0,0.065,0.887,0.048,-0.9505
+Warren says GOP has been trying to 'smear' Rep. Omar for years amid move to remove her from key committee,2023-01-30T23:38:53Z,44.0,0.0,0.0,0.0,0.0,0.048,0.914,0.038,-0.5408
+Omar lashes out at McCarthy for 'personally whipping votes' against her: 'Pathetic',2023-01-31T21:03:17Z,45.0,0.0,0.0,0.0,0.0,0.061,0.914,0.026,-0.9197
+Israel rejects US request for Hawk missiles in aid to Ukraine,2023-01-25T18:49:49Z,46.0,0.044750000000000005,0.2804166666666667,0.008166666666666668,-0.118125,0.068,0.871,0.062,-0.8128
+US and Israel launch large scale military drill in regional show of force,2023-01-25T17:04:23Z,47.0,0.0058000000000000005,0.13024000000000002,0.02396,0.061824,0.025,0.874,0.1,0.9939
+Israeli Prime Minister Benjamin Netanyahu makes surprise visit to Jordan to meet with King Abdullah II,2023-01-24T17:07:47Z,48.0,0.0071428571428571435,0.2592857142857143,0.019285714285714288,0.0346,0.071,0.832,0.097,0.9355
+Israel to 'expedite' gun licenses after deadly shooting near Jerusalem synagogue,2023-01-29T22:00:39Z,49.0,0.0047692307692307695,0.069,0.0031538461538461538,-0.022769230769230767,0.166,0.783,0.051,-0.993
+Israel investigating if Biden administration violated international law in sending artifact to West Bank,2023-02-03T09:41:34Z,50.0,0.009388888888888888,0.09472222222222222,0.007,-0.024466666666666668,0.053,0.922,0.024,-0.9743
+"Israeli, Palestinian forces trade airstrikes, rocket fire, putting West Bank on edge",2023-01-27T13:01:16Z,51.0,0.02064705882352941,0.097,0.0,-0.06605882352941178,0.151,0.782,0.068,-0.994
+"Reps. AOC, Marjorie Taylor Greene tiff over Twitter after Omar vote: 'Be an adult and actually debate me'",2023-02-04T07:41:46Z,52.0,0.0,0.0,0.0,0.0,0.116,0.836,0.048,-0.9958
+Israeli army kills Palestinian man who tried to stab soldier,2023-02-09T20:02:57Z,53.0,0.0,0.0,0.0,0.0,0.197,0.761,0.042,-0.991
+Joe Rogan defends Omar's 2019 'all about the Benjamins' remark: 'That's not an antisemitic comment',2023-02-08T01:00:56Z,54.0,0.0,0.0,0.0,0.0,0.103,0.845,0.052,-0.9899
+"McCarthy takes on press after House kicks Ilhan Omar off committee, calls for 'code of conduct'",2023-02-02T20:07:46Z,55.0,0.0,0.0,0.0,0.0,0.072,0.892,0.036,-0.9858
+Omar blasts GOP's 'Islamophobia' amid committee removal bid: ‘They’re not OK’ with Muslims ‘having a voice’,2023-01-29T16:31:44Z,56.0,0.0,0.0,0.0,0.0,0.056,0.861,0.082,0.9367
+"Ilhan Omar says McCarthy leaving her off Africa subcommittee is 'racist, xenophobic'",2023-01-27T05:27:43Z,57.0,0.0,0.0,0.0,0.0,0.062,0.894,0.044,-0.9186
+Nikki Haley's 2024 presidential bid receives mixed reactions,2023-02-14T19:56:15Z,58.0,0.0,0.0,0.0,0.0,0.041,0.836,0.123,0.9913
+Iran helps Russia employ multipurpose drones in Ukraine for 'maximum damage',2023-02-10T23:41:03Z,59.0,0.0,0.0,0.0,0.0,0.082,0.854,0.064,-0.9309
+US military shoots down Iranian-made drone over oil site in Syria,2023-02-15T07:14:47Z,60.0,0.0,0.0,0.0,0.0,0.086,0.84,0.073,-0.6908
+JESSE WATTERS: Omar got the boot because of anti-Semitism,2023-02-03T01:00:00Z,61.0,0.0,0.0,0.0,0.0,0.097,0.798,0.105,0.5599
+"Holocaust survivor Shlomo Perel, the inspiration for an internationally renowned film, dies at 98",2023-02-03T18:53:54Z,62.0,0.0,0.0,0.0,0.0,0.102,0.806,0.093,-0.8793
+Jerusalem shooting: Alleged 13-year-old Palestinian gunman apprehended by armed Israeli citizen,2023-01-28T20:35:13Z,63.0,0.0034583333333333337,0.07320833333333333,0.006666666666666667,0.013762500000000002,0.157,0.802,0.041,-0.9972
+American tourist arrested for vandalizing Jesus statue at Old City church in Jerusalem,2023-02-02T16:52:08Z,64.0,0.0,0.0,0.0,0.0,0.162,0.814,0.024,-0.9979
+'Jerusalem of Gold': Volunteer unearths artifact of 'great value' at archaeological site,2023-02-09T15:17:20Z,65.0,0.0,0.0,0.0,0.0,0.023,0.905,0.072,0.9722
+CA Rep. Swalwell offers cryptic warning after getting booted from House Intel: 'more time on our hands',2023-01-25T22:36:17Z,66.0,0.0,0.0,0.0,0.0,0.076,0.868,0.056,-0.9659
+Joe Biden's 2023 State of the Union is his campaign manifesto and he's just taken a big gamble,2023-02-08T08:46:40Z,67.0,0.0,0.0,0.0,0.0,0.145,0.754,0.101,-0.9964
+Parents ditch baby at airport check-in after confusion over ticket for infant: police,2023-02-01T17:34:16Z,68.0,0.0,0.0,0.0,0.0,0.125,0.842,0.033,-0.988
+Iran military facility rocked by explosion that officials say was 'unsuccessful' drone attack,2023-01-29T01:36:17Z,69.0,0.0,0.0,0.0,0.0,0.093,0.83,0.077,-0.9309
+"Schiff, Swalwell, Omar respond after Speaker McCarthy keeps them off committees: 'Political vengeance'",2023-01-25T08:15:07Z,70.0,0.0,0.0,0.0,0.0,0.082,0.807,0.111,0.9843
+Pro-life groups slam Biden administration for forcing contraception services on providers,2023-02-01T02:20:48Z,71.0,0.0,0.0,0.0,0.0,0.078,0.842,0.08,0.6249
+Joe Rogan blasted for peddling antisemitic trope after defending Ilhan Omar's 'Benjamin's' remark: 'Et Tu?',2023-02-09T02:00:43Z,72.0,0.0,0.0,0.0,0.0,0.123,0.799,0.078,-0.9948
+Diversity professor verbally attacks student after being triggered by term 'terrorist attack': complaint,2023-02-01T23:30:38Z,73.0,0.0,0.033846153846153845,0.004615384615384615,0.023053846153846154,0.184,0.747,0.069,-0.9989
+Virginia GOP star vows to end Democrat 'roadblock' of Gov. Glenn Youngkin's agenda,2023-02-05T16:00:43Z,74.0,0.0,0.0,0.0,0.0,0.087,0.828,0.085,-0.9216
+Ukraine warns of massive Russian missile attack on anniversary of Putin’s invasion: ‘We have to be ready’,2023-02-16T14:54:05Z,75.0,0.0,0.0,0.0,0.0,0.164,0.781,0.055,-0.997
+UN Sec-Gen warns Russia-Ukraine conflict is leading world into 'wider war',2023-02-06T18:04:05Z,76.0,0.0,0.0,0.0,0.0,0.139,0.743,0.118,-0.9416
+"Twitter House hearing room abruptly loses power, halting hearing",2023-02-08T20:05:27Z,77.0,0.0,0.0,0.0,0.0,0.115,0.843,0.042,-0.9862
+Massachusetts health officials detect gonorrhea strain with 'reduced response' to antibiotics,2023-01-20T02:54:17Z,78.0,0.0,0.0,0.0,0.0,0.041,0.896,0.063,0.8673
+Defense Secretary Austin says US would enter conflict if Russia attacks Estonia,2023-02-16T16:17:30Z,79.0,0.0,0.0,0.0,0.0,0.053,0.867,0.081,0.6481
+Iran’s uranium processing has almost reached nuclear weapons-grade purity: inspectors,2023-02-19T21:15:36Z,80.0,0.0,0.0,0.0,0.0,0.114,0.849,0.037,-0.9888
+Heart health warning: Man scheduled for hip replacement winds up with quadruple bypass surgery,2023-02-15T22:31:36Z,81.0,0.0,0.0,0.0,0.0,0.078,0.842,0.08,0.2826
+Iran can fuel 'several' atomic bombs: UN nuclear official,2023-01-27T01:00:05Z,82.0,0.007628571428571429,0.045085714285714285,0.0044,-0.012694285714285715,0.092,0.817,0.091,-0.9172
+Rep. Ilhan Omar pressed on old comments: 'Wasn't aware' there were 'tropes about Jews and money',2023-01-29T19:00:24Z,83.0,0.0,0.0,0.0,0.0,0.04,0.913,0.046,0.5857
+"After Biden fails to mention Iran during SOTU, lawmakers push measure supporting Iranian protesters",2023-02-09T00:27:27Z,84.0,0.0,0.0,0.0,0.0,0.107,0.806,0.086,-0.9744
+"Palestinians in uproar after Israeli army kill militants, elderly woman in West Bank",2023-01-26T13:32:32Z,85.0,0.0,0.06666666666666667,0.0,0.0,0.173,0.784,0.043,-0.9983
+Philadelphia's mayoral candidates have ideas to end an open-air drug market. Longtime residents are skeptical,2023-02-15T07:00:56Z,86.0,0.0,0.0,0.0,0.0,0.14,0.795,0.065,-0.9966
+George Santos congratulates House for punishing Ilhan Omar for antisemitic remarks,2023-02-02T19:46:13Z,87.0,0.0,0.0,0.0,0.0,0.157,0.746,0.097,-0.9889
+"Fox News Poll: Bipartisan support for sending funding, weapons to Ukraine",2023-02-02T23:00:01Z,88.0,0.0,0.0,0.0,0.0,0.095,0.815,0.091,-0.7414
+"Monterey Park massacre guns revealed, Meghan sends message with 'Spare' tour absence and more top headlines",2023-01-26T11:35:42Z,89.0,0.0,0.0,0.0,0.0,0.086,0.876,0.038,-0.9681
+New York Times columnist argues Joe Biden 'can be seen as the savior of the free world',2023-02-01T22:15:08Z,90.0,0.0,0.0,0.0,0.0,0.075,0.837,0.088,0.4267
+"Turkey, Syria earthquake: Biden, Netanyahu and other world leaders offer aid after thousands killed",2023-02-06T16:29:41Z,91.0,0.0,0.10300000000000001,0.00811111111111111,0.03991111111111111,0.101,0.821,0.079,-0.9667
+US sending another $2.5 billion in military aid to Ukraine,2023-01-20T03:21:50Z,92.0,0.0,0.0,0.0,0.0,0.065,0.876,0.059,-0.1752
+"Ocasio-Cortez explodes over vote to boot Omar, slaps notebook against podium: 'Targeting women of color'",2023-02-02T19:10:19Z,93.0,0.0,0.0,0.0,0.0,0.108,0.863,0.029,-0.9943
+Virginia leaders create Antisemitism Task Force to monitor rise of hate crimes: ‘First of its kind’,2023-02-12T10:35:13Z,94.0,0.0,0.0,0.0,0.0,0.095,0.804,0.101,-0.2732
+House Dem leader predicts 'bipartisan' support to keep Ilhan Omar on Foreign Affairs Committee,2023-01-25T17:54:16Z,95.0,0.0,0.0,0.0,0.0,0.025,0.933,0.043,0.5994
+"Guam capsizing, 'planted docs,' and 'termite' Jewish settlers: Hank Johnson's wildest statements",2023-01-30T16:53:43Z,96.0,0.0,0.0,0.0,0.0,0.129,0.807,0.064,-0.9993
