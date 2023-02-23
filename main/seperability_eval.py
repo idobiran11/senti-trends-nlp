@@ -23,7 +23,7 @@ def create_logger():
     logger.setLevel(logging.INFO)
 
     # Create a file handler
-    handler = logging.FileHandler('data/tests.log')
+    handler = logging.FileHandler('data/logger/tests.log')
     handler.setLevel(logging.INFO)
 
     # Create a formatter and add it to the handler

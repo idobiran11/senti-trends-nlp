@@ -34,9 +34,11 @@ def plot_graphs(scores, object_name, news_vendor):
     plot_2.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
     plt.show()
     plot_3 = scores_graph.plot(x="date", y=['compound', 'compound_s'],
-                               kind="line", figsize=(15, 6), title=f'Metric Comparison for {object_name} on {news_vendor}')
+                               kind="line", figsize=(15, 6), title=f'Simple Metric Comparison for {object_name} on {news_vendor}')
     plot_3.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
+    plt.savefig(f'data/output_plots/Simple model {object_name}_{news_vendor}.png')
     plt.show()
+
 
     return scores_graph
 
