@@ -3,3 +3,5 @@ newsapi-python
 bs4
 pynytimes
 nltk
+sklearn
+
