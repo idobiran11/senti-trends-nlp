@@ -58,7 +58,7 @@ def text_sentence_nltk_handler(object_name, news_vendor, filename, directory="da
     scores_graph.set_index('index')
     print_max_min_articles(scores_graph, corpus)
     scores_graph.to_csv(f"{output_directory}/{news_vendor}_{object_name}_sentiment.csv", index=False)
-
+    return scores_graph
 
 def nltk_analyze(text):
     return _nltk_analyzer.polarity_scores(text)
