@@ -50,7 +50,7 @@ def print_max_min_articles(scores_graph, corpus):
     print(f"Worst_s Article Title: {worse_s['title']}")
 
 
-def algo_handler(object_name, news_vendor, filename, directory="data", output_directory="data/output_data"):
+def text_sentence_nltk_handler(object_name, news_vendor, filename, directory="data", output_directory="data/output_data"):
     corpus = pd.read_csv(f'{directory}/{filename}')
     corpus.rename(columns={'timestamp': 'date'}, inplace=True)
     scores = calc_scores_on_corpus(corpus, object_name)
@@ -162,4 +162,4 @@ def calc_scores_on_corpus(corpus, name):
 
 
 if __name__ == "__main__":
-    algo_handler(object_name=OBJECT_NAME, news_vendor=NEWS_VENDOR, filename=FILENAME)
+    text_sentence_nltk_handler(object_name=OBJECT_NAME, news_vendor=NEWS_VENDOR, filename=FILENAME)
