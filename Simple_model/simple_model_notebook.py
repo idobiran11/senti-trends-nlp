@@ -6,11 +6,58 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 
 from nltk.tokenize import sent_tokenize
 
+OBJECT_NAME = "Netanyahu"
+NEWS_VENDOR = "CNN"
+FILENAME = "cnn-articles-bibi.csv"
+
 _nltk_analyzer = None
 
 nltk.download('vader_lexicon')
 nltk.download('punkt')
 _nltk_analyzer = SentimentIntensityAnalyzer()
+
+
+def plot_graphs(scores):
+    scores_graph = pd.concat([scores.drop(['sentences_score'], axis=1), scores['sentences_score'].apply(pd.Series)],
+                             axis=1)
+    scores_graph = pd.concat([scores_graph.drop(['text_score'], axis=1), scores_graph['text_score'].apply(pd.Series)],
+                             axis=1)
+    plot_1 = scores_graph.plot(x="date", y=['neg_s', 'neu_s', 'pos_s', 'compound_s'],
+                               kind="line", figsize=(15, 6), title='sentences score January 2022')
+    plot_1.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
+    plot_2 = scores_graph.plot(x="date", y=['neg', 'neu', 'pos', 'compound'],
+                               kind="line", figsize=(15, 6), title='text score January 2022')
+    plot_2.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
+    plot_3 = scores_graph.plot(x="date", y=['compound', 'compound_s'],
+                               kind="line", figsize=(15, 6), title='metric comparisson January 2022')
+    plot_3.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
+
+    return scores_graph
+
+
+def print_max_min_articles(scores_graph, corpus):
+    best_article_s = scores_graph["compound_s"].argmax()
+    worse_article_s = scores_graph["compound_s"].argmin()
+    best_article = scores_graph["compound"].argmax()
+    worse_article = scores_graph["compound"].argmin()
+    worse_s = corpus.iloc[worse_article_s]
+    best_s = corpus.iloc[best_article_s]
+    worse = corpus.iloc[worse_article]
+    best = corpus.iloc[best_article]
+    print(f"Best Article Title: {best['title']}")
+    print(f"Worst Article Title: {worse['title']}")
+    print(f"Best_s Article Title: {best_s['title']}")
+    print(f"Worst_s Article Title: {worse_s['title']}")
+
+
+def algo_handler(object_name, news_vendor, filename, directory="data", output_directory="data/output_data"):
+    corpus = pd.read_csv(f'{directory}/{filename}')
+    corpus.rename(columns={'timestamp': 'date'}, inplace=True)
+    scores = calc_scores_on_corpus(corpus, object_name)
+    scores_graph = plot_graphs(scores)
+    scores_graph.set_index('index')
+    print_max_min_articles(scores_graph, corpus)
+    scores_graph.to_csv(f"{output_directory}/{news_vendor}_{object_name}_sentiment.csv", index=False)
 
 
 def nltk_analyze(text):
@@ -93,7 +140,7 @@ def get_text_score(text_sent, word):
     return relevant_corpus, scores, total_score
 
 
-def clac_score_on_corpus(corpus, name):
+def calc_scores_on_corpus(corpus, name):
     text_score_df = pd.DataFrame(columns=['title', 'date', 'text_score', 'sentences_score'])
     for index, row in corpus.iterrows():
         # for row in corpus:
@@ -101,7 +148,7 @@ def clac_score_on_corpus(corpus, name):
         text = text.lower()
         # calc whole text score
         whole_text_score = nltk_analyze(text)
-        # sperate to senteces
+        # seperate to sentences
         text_sent = sentences_split(text)
         # get score
         relevant_text, relevant_scores, total_score = get_text_score(text_sent, name)
@@ -114,56 +161,5 @@ def clac_score_on_corpus(corpus, name):
     return text_score_df
 
 
-corpus = pd.read_csv('data/fox-articles-bibi.csv')
-corpus.rename(columns={'timestamp': 'date'}, inplace=True)
-
-
-corpus.head()
-
-
-corpus.iloc[0, 1]
-
-scores = clac_score_on_corpus(corpus, "netanyahu")
-
-scores.head()
-scores.iloc[0, 0]
-
-scores_graph = pd.concat([scores.drop(['sentences_score'], axis=1), scores['sentences_score'].apply(pd.Series)], axis=1)
-scores_graph = pd.concat([scores_graph.drop(['text_score'], axis=1), scores_graph['text_score'].apply(pd.Series)],
-                         axis=1)
-
-scores_graph.columns
-
-
-plot_1 = scores_graph.plot(x="date", y=['neg_s', 'neu_s', 'pos_s', 'compound_s'],
-                           kind="line", figsize=(15, 6), title='sentences score January 2022')
-plot_1.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
-
-
-plot_2 = scores_graph.plot(x="date", y=['neg', 'neu', 'pos', 'compound'],
-                           kind="line", figsize=(15, 6), title='text score January 2022')
-plot_2.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
-
-plot_3 = scores_graph.plot(x="date", y=['compound', 'compound_s'],
-                           kind="line", figsize=(15, 6), title='metric comparisson January 2022')
-plot_3.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
-
-
-
-scores_graph.set_index('index')
-best_article_s = scores_graph["compound_s"].argmax()
-worse_article_s = scores_graph["compound_s"].argmin()
-best_article = scores_graph["compound"].argmax()
-worse_article = scores_graph["compound"].argmin()
-worse_s = corpus.iloc[worse_article_s]
-best_s = corpus.iloc[best_article_s]
-worse = corpus.iloc[worse_article]
-best = corpus.iloc[best_article]
-print(f"Best Article Title: {best['title']}")
-print(f"Worst Article Title: {worse['title']}")
-print(f"Best_s Article Title: {best_s['title']}")
-print(f"Worst_s Article Title: {worse_s['title']}")
-
-
-
-scores_graph.to_csv("cnn_israel_sentiment.csv", index=False)
+if __name__ == "__main__":
+    algo_handler(object_name=OBJECT_NAME, news_vendor=NEWS_VENDOR, filename=FILENAME)
