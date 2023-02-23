@@ -1,4 +1,5 @@
 # import
+import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import pandas as pd
 import nltk
@@ -17,20 +18,23 @@ nltk.download('punkt')
 _nltk_analyzer = SentimentIntensityAnalyzer()
 
 
-def plot_graphs(scores):
+def plot_graphs(scores, object_name, news_vendor):
     scores_graph = pd.concat([scores.drop(['sentences_score'], axis=1), scores['sentences_score'].apply(pd.Series)],
                              axis=1)
     scores_graph = pd.concat([scores_graph.drop(['text_score'], axis=1), scores_graph['text_score'].apply(pd.Series)],
                              axis=1)
     plot_1 = scores_graph.plot(x="date", y=['neg_s', 'neu_s', 'pos_s', 'compound_s'],
-                               kind="line", figsize=(15, 6), title='sentences score January 2022')
+                               kind="line", figsize=(15, 6), title=f'Sentences Model Score for {object_name} on {news_vendor}')
     plot_1.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
+    plt.show()
     plot_2 = scores_graph.plot(x="date", y=['neg', 'neu', 'pos', 'compound'],
-                               kind="line", figsize=(15, 6), title='text score January 2022')
+                               kind="line", figsize=(15, 6), title=f'Entire Text score for {object_name} on {news_vendor}')
     plot_2.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
-    plot_3 = scores_graph.plot(x="date", y=['compound', 'compound_s'],
-                               kind="line", figsize=(15, 6), title='metric comparisson January 2022')
+    plt.show()
+    plot_3 = scores_graph.plot(x="date", y=['compound', 'compound_sentences'],
+                               kind="line", figsize=(15, 6), title=f'Metric Comparison for {object_name} on {news_vendor}')
     plot_3.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
+    plt.show()
 
     return scores_graph
 
@@ -54,7 +58,7 @@ def text_sentence_nltk_handler(object_name, news_vendor, filename, directory="da
     corpus = pd.read_csv(f'{directory}/{filename}')
     corpus.rename(columns={'timestamp': 'date'}, inplace=True)
     scores = calc_scores_on_corpus(corpus, object_name)
-    scores_graph = plot_graphs(scores)
+    scores_graph = plot_graphs(scores, object_name, news_vendor)
     scores_graph.set_index('index')
     print_max_min_articles(scores_graph, corpus)
     scores_graph.to_csv(f"{output_directory}/{news_vendor}_{object_name}_sentiment.csv", index=False)
