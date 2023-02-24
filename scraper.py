@@ -34,17 +34,35 @@ def get_json(url, params={}):
     res = get(url, params=params)
     if (res.status_code != 200):
         print(f"WARN: Request to {url} failed, res:\n {res.text}")
+        return None
     return res.json()
 
 
-class fox_scraper:
+class scraper:
+    articles = []
+
+    def __init__(self, object_name, start_date, end_date):
+        self.object_name = object_name
+        self.start_date = start_date
+        self.end_date = end_date
+
+    def to_csv(self):
+        if not self.articles:
+            print("no articles to save")
+            return
+        df = pd.DataFrame(self.articles)
+        df.to_csv(
+            f'data/{self.source_name}-articles-{self.object_name}.csv', index=False)
+
+
+class fox_scraper(scraper):
     base_url = "https://api.foxnews.com/search/web"
     source_name = 'fox'
 
     def __init__(self, object_name, start_date, end_date):
-        self.object_name = object_name
-        self.start_date = start_date.replace('/', '')
-        self.end_date = end_date.replace('/', '')
+        start_date = start_date.replace('/', '')
+        end_date = end_date.replace('/', '')
+        super().__init__(object_name, start_date, end_date)
 
     def get_articles(self):
         page_num = 1
@@ -59,6 +77,9 @@ class fox_scraper:
         while (next_page_index is not None):
 
             res = get_json(self.base_url, params=params)
+            if not res:
+                print(" -- unexpedted end of pages")
+                break
             total_count = res['queries']['request'][0].get(
                 'totalResults', None) or 0
 
@@ -121,27 +142,74 @@ class fox_scraper:
             return False
         return True
 
-    def to_csv(self):
-        if not self.articles:
-            print("no articles to save")
-            return
-        df = pd.DataFrame(self.articles)
-        df.to_csv(
-            f'data/{self.source_name}-articles-{self.object_name}.csv', index=False)
+
+class cnn_scraper(scraper):
+    base_url = "https://search.api.cnn.io/content"
+    source_name = 'cnn'
+
+    def __init__(self, object_name, start_date):
+        start_date = datetime.strptime(start_date, "%Y/%m/%d")
+        super().__init__(object_name, start_date, None)
+
+    def get_articles(self):
+        count = 1
+        total_count = None
+        params = {
+            "q": self.object_name,
+            "size": 50,
+            "sort": "newest",
+            "type": "article",
+            "page": 1,
+        }
+
+        while ((not total_count) or len(self.articles) < total_count):
+            res = get_json(self.base_url, params=params)
+            if not res:
+                return
+            if not total_count:
+                total_count = res['meta']['of']
+                print(
+                    f"found {total_count} results for {self.object_name} in {self.source_name}")
+            print(f"page {params['page']}")
+            for item in res['result']:
+                print(f"scraping article {count}: {item['headline']}")
+                article = self._get_article(item)
+                if article:
+                    # if article['timestamp'] < self.start_date:
+                    #     print(" -- reached start date, stopping")
+                    #     total_count = len(self.articles)
+                    #     break
+                    self.articles.append(article)
+                count += 1
+            params['page'] += 1
+        return self
+
+    def _get_article(self, item):
+        article = {}
+        article['url'] = item['url']
+        article['source'] = self.source_name
+        article['title'] = item['headline']
+        article['text'] = item['body']
+        article['timestamp'] = datetime.fromisoformat(
+            item['firstPublishDate'].split('T')[0])
+
+        return article
 
 
 sources = {
-    'fox': fox_scraper
-    # 'cnn': cnn_scraper
+    'fox': fox_scraper,
+    'cnn': cnn_scraper
 }
-
+cnn = None
 try:
-    fox_scraper("netanyahu", "2022/01/01", "2023/23/02").get_articles()
+    # scraper = fox_scraper("netanyahu", "2022/01/01",
+    #                       "2023/02/23").get_articles()
+    cnn = cnn_scraper("netanyahu", "2022/01/01",).get_articles()
 except Exception as e:
     print(e)
 finally:
     print("saving to csv")
-    fox_scraper.to_csv()
+    cnn.to_csv()
 
 # if __name__ == "__main__":
 #     if len(argv) != 5:
