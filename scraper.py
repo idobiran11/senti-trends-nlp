@@ -5,6 +5,10 @@ import pandas as pd
 from sys import argv
 
 
+df = pd.read_csv('data/cnn-articles-Netanyahu.csv')
+pass
+
+
 def get_the_f_time(time_string):
     time_string = "March 8, 2021 2:33am EST"
 
@@ -175,11 +179,10 @@ class cnn_scraper(scraper):
                 print(f"scraping article {count}: {item['headline']}")
                 article = self._get_article(item)
                 if article:
-                    # if article['timestamp'] < self.start_date:
-                    #     print(" -- reached start date, stopping")
-                    #     total_count = len(self.articles)
-                    #     break
-                    self.articles.append(article)
+                    if article['timestamp'] >= self.start_date:
+                        self.articles.append(article)
+                    else:
+                        print(" -- skipping article, not in date range")
                 count += 1
             params['page'] += 1
         return self
