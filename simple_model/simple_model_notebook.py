@@ -68,7 +68,9 @@ def text_sentence_nltk_handler(object_name, news_vendor, corpus, output_director
     scores_graph = plot_graphs(scores, object_name, news_vendor)
     scores_graph.set_index('index')
     print_max_min_articles(scores_graph, corpus)
-    scores_graph.to_csv(f"{output_directory}/{news_vendor}_{object_name}_sentiment.csv", index=False)
+    filepath = f"{output_directory}/{news_vendor}_{object_name}_nltk_sentences_sentiment.csv"
+    scores_graph.to_csv(filepath, index=False)
+    neptune_run[f'eval/{news_vendor}_sentiment'].upload(filepath)
     return scores_graph
 
 def nltk_analyze(text):
