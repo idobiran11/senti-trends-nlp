@@ -7,7 +7,7 @@ import matplotlib.dates as mdates
 import pandas as pd
 import nltk
 import math
-from nltk.sentiment import SentimentIntensityAnalyzer
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.tokenize import sent_tokenize
 from utils.config_neptune import neptune_run
 
