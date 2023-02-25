@@ -6,8 +6,8 @@ import matplotlib.dates as mdates
 import pandas as pd
 import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
-
 from nltk.tokenize import sent_tokenize
+from utils.config_neptune import neptune_run
 
 OBJECT_NAME = "Netanyahu"
 NEWS_VENDOR = "CNN"
@@ -28,17 +28,21 @@ def plot_graphs(scores, object_name, news_vendor):
     plot_1 = scores_graph.plot(x="date", y=['neg_s', 'neu_s', 'pos_s', 'compound_s'],
                                kind="line", figsize=(15, 6), title=f'Sentences Model Score for {object_name} on {news_vendor}')
     plot_1.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
-    plt.show()
+    filepath = "plot_1.png"
+    plt.savefig(filepath)
+    neptune_run[f"build/{news_vendor}-sentences"].upload(filepath)
     plot_2 = scores_graph.plot(x="date", y=['neg', 'neu', 'pos', 'compound'],
                                kind="line", figsize=(15, 6), title=f'Entire Text score for {object_name} on {news_vendor}')
     plot_2.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
-    plt.show()
+    filepath = "plot_2.png"
+    plt.savefig(filepath)
+    neptune_run[f"build/{news_vendor}-full-text"].upload(filepath)
     plot_3 = scores_graph.plot(x="date", y=['compound', 'compound_s'],
                                kind="line", figsize=(15, 6), title=f'Simple Metric Comparison for {object_name} on {news_vendor}')
     plot_3.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
-    plt.savefig(f'data/output_plots/Simple model {object_name}_{news_vendor}.png')
-    plt.show()
-
+    filepath = f'data/output_plots/simple_model_{object_name}_{news_vendor}.png'
+    plt.savefig(filepath)
+    neptune_run[f"build/{news_vendor}-Model-Comparison"].upload(filepath)
 
     return scores_graph
 
