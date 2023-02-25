@@ -1,10 +1,12 @@
 # import
 import warnings
+
 warnings.filterwarnings("ignore")
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import pandas as pd
 import nltk
+import math
 from nltk.sentiment import SentimentIntensityAnalyzer
 from nltk.tokenize import sent_tokenize
 from utils.config_neptune import neptune_run
@@ -26,19 +28,22 @@ def plot_graphs(scores, object_name, news_vendor):
     scores_graph = pd.concat([scores_graph.drop(['text_score'], axis=1), scores_graph['text_score'].apply(pd.Series)],
                              axis=1)
     plot_1 = scores_graph.plot(x="date", y=['neg_s', 'neu_s', 'pos_s', 'compound_s'],
-                               kind="line", figsize=(15, 6), title=f'Sentences Model Score for {object_name} on {news_vendor}')
+                               kind="line", figsize=(15, 6),
+                               title=f'Sentences Model Score for {object_name} on {news_vendor}')
     plot_1.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
     filepath = "plot_1.png"
     plt.savefig(filepath)
     neptune_run[f"build/{news_vendor}-sentences"].upload(filepath)
     plot_2 = scores_graph.plot(x="date", y=['neg', 'neu', 'pos', 'compound'],
-                               kind="line", figsize=(15, 6), title=f'Entire Text score for {object_name} on {news_vendor}')
+                               kind="line", figsize=(15, 6),
+                               title=f'Entire Text score for {object_name} on {news_vendor}')
     plot_2.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
     filepath = "plot_2.png"
     plt.savefig(filepath)
     neptune_run[f"build/{news_vendor}-full-text"].upload(filepath)
     plot_3 = scores_graph.plot(x="date", y=['compound', 'compound_s'],
-                               kind="line", figsize=(15, 6), title=f'Simple Metric Comparison for {object_name} on {news_vendor}')
+                               kind="line", figsize=(15, 6),
+                               title=f'Simple Metric Comparison for {object_name} on {news_vendor}')
     plot_3.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
     filepath = f'data/output_plots/simple_model_{object_name}_{news_vendor}.png'
     plt.savefig(filepath)
@@ -72,6 +77,19 @@ def text_sentence_nltk_handler(object_name, news_vendor, corpus, output_director
     scores_graph.to_csv(filepath, index=False)
     neptune_run[f'eval/{news_vendor}_sentiment'].upload(filepath)
     return scores_graph
+
+
+def norm_text_sentence_nltk_handler(object_name, news_vendor, corpus, output_directory="data/output_data"):
+    corpus.rename(columns={'timestamp': 'date'}, inplace=True)
+    scores = calc_scores_on_corpus(corpus, object_name, normalized=True)
+    scores_graph = plot_graphs(scores, object_name, news_vendor)
+    scores_graph.set_index('index')
+    print_max_min_articles(scores_graph, corpus)
+    filepath = f"{output_directory}/{news_vendor}_{object_name}_normalized_nltk_sentences_sentiment.csv"
+    scores_graph.to_csv(filepath, index=False)
+    neptune_run[f'eval/{news_vendor}_sentiment'].upload(filepath)
+    return scores_graph
+
 
 def nltk_analyze(text):
     return _nltk_analyzer.polarity_scores(text)
@@ -125,7 +143,7 @@ def find_sentences_with_word(text_sent, word):
     return relevant_corpus, scores
 
 
-def get_text_score(text_sent, word):
+def get_text_score(text_sent, word, normalized=False):
     """
     get a word and text splitted to sentences.
     return list of sentences containing the word, each sentece score and text total score
@@ -133,8 +151,8 @@ def get_text_score(text_sent, word):
     relevant_corpus = []
     scores = []
     total_score = {'neg_s': 0.0, 'neu_s': 0.0, 'pos_s': 0.0, 'compound_s': 0.0}
-    num_of_senteces = len(text_sent)
-
+    num_of_sentences = len(text_sent)
+    compound_count = 0
     for sent in text_sent:
         if word in sent:
             relevant_corpus.append(sent)
@@ -144,16 +162,28 @@ def get_text_score(text_sent, word):
             total_score["neg_s"] += curr_score["neg"]
             total_score["neu_s"] += curr_score["neu"]
             total_score["pos_s"] += curr_score["pos"]
-            total_score["compound_s"] += curr_score["compound"]
-    total_score["neg_s"] = total_score["neg_s"] / num_of_senteces
-    total_score["neu_s"] = total_score["neu_s"] / num_of_senteces
-    total_score["pos_s"] = total_score["pos_s"] / num_of_senteces
-    total_score["compound_s"] = total_score["compound_s"] / num_of_senteces
-
+            if not normalized:
+                total_score["compound_s"] += curr_score["compound"]
+            else:
+                normalizing_threshold = 0.0005
+                neptune_run["normalizing_threshold"] = normalizing_threshold
+                if math.fabs(curr_score["compound"]) > normalizing_threshold:
+                    total_score["compound_s"] += curr_score["compound"]
+                    compound_count += 1
+    total_score["neg_s"] = total_score["neg_s"] / num_of_sentences
+    total_score["neu_s"] = total_score["neu_s"] / num_of_sentences
+    total_score["pos_s"] = total_score["pos_s"] / num_of_sentences
+    if not normalized:
+        total_score["compound_s"] = total_score["compound_s"] / num_of_sentences
+    else:
+        if compound_count > 0:
+            total_score["compound_s"] = total_score["compound_s"] / compound_count
+        else:
+            total_score["compound_s"] = 0
     return relevant_corpus, scores, total_score
 
 
-def calc_scores_on_corpus(corpus, name):
+def calc_scores_on_corpus(corpus, name, normalized=False):
     text_score_df = pd.DataFrame(columns=['title', 'date', 'text_score', 'sentences_score'])
     for index, row in corpus.iterrows():
         # for row in corpus:
@@ -164,7 +194,7 @@ def calc_scores_on_corpus(corpus, name):
         # seperate to sentences
         text_sent = sentences_split(text)
         # get score
-        relevant_text, relevant_scores, total_score = get_text_score(text_sent, name)
+        relevant_text, relevant_scores, total_score = get_text_score(text_sent, name, normalized)
         # save row to df
         df = pd.DataFrame(
             {"index": [index], "title": [row["title"]], "date": [row['date']], "text_score": [whole_text_score],
