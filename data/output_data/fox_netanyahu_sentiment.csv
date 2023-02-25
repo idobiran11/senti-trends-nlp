@@ -1,31 +1,6 @@
 title,date,index,neg_s,neu_s,pos_s,compound_s,neg,neu,pos,compound
-Schumer plans Israel visit as Netanyahu faces protests over judicial reforms,2023-02-16T15:26:29Z,0.0,0.0204,0.5696000000000001,0.01,-0.13908,0.037,0.929,0.034,0.2247
-Israel to send earthquake aid to old foe Syria in a rare example of cooperation between enemy neighbors,2023-02-06T19:20:57Z,1.0,0.03844444444444444,0.4737777777777778,0.043333333333333335,-0.1458666666666667,0.096,0.844,0.061,-0.9629
-Israel attacks Iranian targets in Syria as shadow war heats up between the two adversaries: report,2023-02-19T19:10:05Z,2.0,0.023043478260869565,0.09669565217391306,0.010695652173913044,-0.04114782608695653,0.129,0.809,0.062,-0.9962
-Israeli protesters take to streets to blast Netanyahu 'judicial reforms' as PM calls for unity,2023-02-13T20:23:46Z,3.0,0.01587179487179487,0.3026153846153846,0.014846153846153846,-0.02053333333333333,0.079,0.852,0.068,-0.8159
-Russia warns Israel against providing arms to Ukraine: 'Will lead to an escalation of this crisis',2023-02-01T19:29:47Z,4.0,0.01689473684210526,0.2378421052631579,0.008368421052631579,-0.09023684210526317,0.079,0.867,0.054,-0.9626
-"NYT writer says AIPAC, Jewish groups using 'power and influence' to stop US from being tough on Israel",2023-01-25T21:19:06Z,5.0,0.019029411764705878,0.2122058823529412,0.004058823529411765,-0.06313235294117647,0.1,0.853,0.047,-0.9965
-"Turkey, Syria earthquake: Biden, Netanyahu and other world leaders offer aid after thousands killed",2023-02-06T16:29:41Z,6.0,0.0,0.10300000000000001,0.00811111111111111,0.03991111111111111,0.101,0.821,0.079,-0.9667
-"Israeli officials double down on settlement construction, rebuke US criticism",2023-02-14T22:53:15Z,7.0,0.0205625,0.149125,0.017812500000000002,-0.033368749999999996,0.097,0.806,0.097,-0.8509
-Romania's second earthquake in two days reaches 5.7 magnitude,2023-02-14T18:45:47Z,8.0,0.017714285714285714,0.12514285714285714,0.0,-0.1258142857142857,0.102,0.874,0.024,-0.9678
-Israel rejects US request for Hawk missiles in aid to Ukraine,2023-01-25T18:49:49Z,9.0,0.044750000000000005,0.2804166666666667,0.008166666666666668,-0.118125,0.068,0.871,0.062,-0.8128
-Turkey earthquake destroys portions of Roman-era Gaziantep Castle,2023-02-06T19:45:36Z,10.0,0.016785714285714286,0.054642857142857146,0.0,-0.059078571428571425,0.099,0.872,0.028,-0.9802
-Israeli Prime Minister Benjamin Netanyahu makes surprise visit to Jordan to meet with King Abdullah II,2023-01-24T17:07:47Z,11.0,0.0071428571428571435,0.2592857142857143,0.019285714285714288,0.0346,0.071,0.832,0.097,0.9355
-US and Israel launch large scale military drill in regional show of force,2023-01-25T17:04:23Z,12.0,0.0058000000000000005,0.13024000000000002,0.02396,0.061824,0.025,0.874,0.1,0.9939
-"Israel's foreign minister visits Ukraine, pledges financial aid",2023-02-16T18:45:22Z,13.0,0.004066666666666666,0.11686666666666667,0.012333333333333333,0.06640666666666667,0.054,0.808,0.137,0.9968
-"Israeli, Palestinian forces trade airstrikes, rocket fire, putting West Bank on edge",2023-01-27T13:01:16Z,14.0,0.02064705882352941,0.097,0.0,-0.06605882352941178,0.151,0.782,0.068,-0.994
-Jerusalem shooting: Alleged 13-year-old Palestinian gunman apprehended by armed Israeli citizen,2023-01-28T20:35:13Z,15.0,0.0034583333333333337,0.07320833333333333,0.006666666666666667,0.013762500000000002,0.157,0.802,0.041,-0.9972
-"Iran blames Israel for drone strike caught on video, threatens retaliation",2023-02-02T14:33:47Z,16.0,0.0,0.0625,0.0,0.0,0.12,0.845,0.035,-0.9943
-Gunmen storm Syrian hospital where baby born in earthquake rubble is recovering,2023-02-14T17:23:39Z,17.0,0.010166666666666666,0.07316666666666667,0.0,-0.05756666666666666,0.053,0.915,0.032,-0.8758
-"Sen. Hagerty slams Biden plan for Palestine consulate as 'affront' to Israel, 'bizarre' act of diplomacy",2023-02-18T16:33:00Z,18.0,0.0,0.03403846153846154,0.004423076923076924,0.014684615384615383,0.103,0.861,0.035,-0.9957
-Israel to 'expedite' gun licenses after deadly shooting near Jerusalem synagogue,2023-01-29T22:00:39Z,19.0,0.0047692307692307695,0.069,0.0031538461538461538,-0.022769230769230767,0.166,0.783,0.051,-0.993
-Israel investigating if Biden administration violated international law in sending artifact to West Bank,2023-02-03T09:41:34Z,20.0,0.009388888888888888,0.09472222222222222,0.007,-0.024466666666666668,0.053,0.922,0.024,-0.9743
-Iran suffers drone strike days after US and Israel launched joint military drill in the region,2023-01-29T10:03:28Z,21.0,0.013481481481481481,0.055851851851851854,0.004740740740740741,-0.053455555555555555,0.106,0.83,0.063,-0.9945
-Israeli forces kill 5 Palestinians linked to the Islamic militant group Hamas in West Bank raid,2023-02-06T17:49:11Z,22.0,0.01245,0.035449999999999995,0.0021000000000000003,-0.045005,0.145,0.829,0.025,-0.9984
-Syrian infant whose mother appears to have given birth while buried underneath ruble saved by rescue crew,2023-02-07T19:07:09Z,23.0,0.0014347826086956522,0.040913043478260865,0.0011739130434782609,-0.005565217391304348,0.108,0.829,0.062,-0.9944
-"Palestinian rams car into crowded bus stop, killing 2 people including a 6-year-old",2023-02-10T15:12:17Z,24.0,0.010368421052631579,0.04226315789473684,0.0,-0.05106315789473684,0.2,0.785,0.015,-0.9993
-World marks Holocaust Remembrance Day as antisemitism continues to rise: 'Jew-hatred still exists',2023-01-27T16:06:31Z,25.0,0.0,0.038461538461538464,0.0,0.0,0.106,0.779,0.116,0.9015
-"Palestinians in uproar after Israeli army kill militants, elderly woman in West Bank",2023-01-26T13:32:32Z,26.0,0.0,0.06666666666666667,0.0,0.0,0.173,0.784,0.043,-0.9983
-"Tensions rise as Iran threatens Israel, reveals new underground airbase",2023-02-08T15:57:32Z,27.0,0.00375,0.0549375,0.0038125,0.0016125,0.118,0.816,0.066,-0.9922
-Israeli police foil drone assassination attempt in gangland hit,2023-01-20T18:14:30Z,28.0,0.00865,0.0398,0.00155,-0.039529999999999996,0.148,0.784,0.067,-0.9933
-Iran can fuel 'several' atomic bombs: UN nuclear official,2023-01-27T01:00:05Z,29.0,0.007628571428571429,0.045085714285714285,0.0044,-0.012694285714285715,0.092,0.817,0.091,-0.9172
+Blinken reminds Israel Biden admin committed to 'two-state solution ...,2021-03-08 02:33:00,0.0,0.01676923076923077,0.552076923076923,0.046538461538461535,0.19164615384615385,0.038,0.876,0.087,0.9676
+"Ukraine decries Israel, Russia chat and suggests 'change of policy ...",2021-03-08 02:33:00,1.0,0.014352941176470587,0.26023529411764706,0.019470588235294118,0.022099999999999998,0.1,0.821,0.078,-0.979
+"Syria says Israeli airstrike shut down Damascus airport, killing 2 ...",2021-03-08 02:33:00,2.0,0.016823529411764706,0.3122941176470588,0.02382352941176471,0.011647058823529415,0.103,0.847,0.051,-0.9904
+Fight over Jerusalem's Temple Mount holy site: Why is it so ...,2021-03-08 02:33:00,3.0,0.0033513513513513515,0.062013513513513516,0.0021891891891891893,0.00011081081081080985,0.058,0.897,0.045,-0.9711
+Israeli ambassador slams UN for meeting over visit to Temple Mount ...,2021-03-08 02:33:00,4.0,0.009727272727272727,0.10487878787878789,0.006606060606060606,-0.01604848484848485,0.091,0.829,0.08,-0.9575
