@@ -1,32 +1,37 @@
 import pandas as pd
 import spacy
 from spacy.tokens import Doc
-from utils.constantnames import PreprocessNames
+from utils.constants import PreprocessNames
 import os
+from utils.config_neptune import neptune_run
 
 DATA_DIR = "data"
 
 
-def create_coref_csv(news_vendor: str, object_name: str, input_csv_name: str,
+def no_preprocess(news_vendor: str, object_name: str, input_csv_name: str,
+                  output_dir: str = "data/preprocessed_data"):
+    return pd.read_csv(f'{DATA_DIR}/{input_csv_name}')
+
+
+def coref_preprocess(news_vendor: str, object_name: str, input_csv_name: str,
                      output_dir: str = "data/preprocessed_data"):
     nlp = spacy.load("en_coreference_web_trf")
     df = pd.read_csv(f'{DATA_DIR}/{input_csv_name}')
     output_filename = f'{news_vendor}_{object_name}_{PreprocessNames.COREF}.csv'
     full_output_path = f'{output_dir}/{output_filename}'
-    if os.path.isfile(full_output_path):
-        return pd.read_csv(full_output_path)
-    else:
+    if not os.path.isfile(full_output_path):
         for index, row in df.iterrows():
             text = row['text']
             doc = nlp(text)
             print(doc.spans)
             coref_text = resolve_references(doc, object_name)
             df.at[index, 'text'] = coref_text
-        try:
-            df.to_csv(full_output_path)
-        except Exception as e:
-            df.to_csv(f'{output_filename}')
-        return df
+    try:
+        df.to_csv(full_output_path)
+        neptune_run[news_vendor + "preprocessed_dataset"].upload(full_output_path)
+    except Exception as e:
+        df.to_csv(f'{output_filename}')
+    return df
 
 
 def resolve_references(doc: Doc, object: str = None) -> str:
