@@ -58,8 +58,7 @@ def print_max_min_articles(scores_graph, corpus):
     print(f"Worst_s Article Title: {worse_s['title']}")
 
 
-def text_sentence_nltk_handler(object_name, news_vendor, filename, directory="data", output_directory="data/output_data"):
-    corpus = pd.read_csv(f'{directory}/{filename}')
+def text_sentence_nltk_handler(object_name, news_vendor, corpus, output_directory="data/output_data"):
     corpus.rename(columns={'timestamp': 'date'}, inplace=True)
     scores = calc_scores_on_corpus(corpus, object_name)
     scores_graph = plot_graphs(scores, object_name, news_vendor)

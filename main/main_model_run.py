@@ -14,7 +14,10 @@ from sklearn import metrics
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from Simple_model.simple_model_notebook import text_sentence_nltk_handler
+from simple_model.simple_model_notebook import text_sentence_nltk_handler
+from preprocess.coreference_resolution import create_coref_csv
+from utils.constantnames import ModelNames, PreprocessNames
+from utils.config_neptune import neptune_run
 
 
 def create_logger():
@@ -38,12 +41,30 @@ def create_logger():
 logger = create_logger()
 
 
-def e2e_handler(object_name: str, left_news_vendor: str, right_news_vendor: str, model: str):
-    if model == "nltk":
+def e2e_handler(object_name: str, left_news_vendor: str, right_news_vendor: str, model: str, preprocess: str):
+    left_input_file = f'{left_news_vendor}-articles-{object_name}.csv'
+    right_input_file = f'{right_news_vendor}-articles-{object_name}.csv'
+    if preprocess == PreprocessNames.COREF:
+        left_preprocessed_df = create_coref_csv(news_vendor=left_news_vendor, object_name=object_name,
+                                                input_csv_name=left_input_file)
+        right_preprocessed_df = create_coref_csv(news_vendor=right_news_vendor, object_name=object_name,
+                                                 input_csv_name=right_input_file)
+    else:
+        raise Exception("preprocess failed")
+    if model == ModelNames.NLTK:
         left_df = text_sentence_nltk_handler(object_name=object_name, news_vendor=left_news_vendor,
-                                             filename=f'{left_news_vendor}-articles-{object_name}.csv')
+                                             corpus=left_preprocessed_df)
         right_df = text_sentence_nltk_handler(object_name=object_name, news_vendor=right_news_vendor,
-                                              filename=f'{right_news_vendor}-articles-{object_name}.csv')
+                                              corpus=right_preprocessed_df)
+    else:
+        print("Invalid model name")
+        raise Exception("Invalid model name")
+
+    print_create_eval_plots(object_name, left_news_vendor, right_news_vendor, model, left_df, right_df)
+    neptune_run.stop()
+
+def print_create_eval_plots(object_name: str, left_news_vendor: str, right_news_vendor: str, model: str, left_df,
+                            right_df):
     left = relevant_data(left_df, ["date", "compound_s"])
     right = relevant_data(right_df, ["date", "compound_s"])
     print(f"Shape Left df: {left.shape}")
@@ -113,7 +134,8 @@ def e2e_handler(object_name: str, left_news_vendor: str, right_news_vendor: str,
 
     print(f"Purity Score: {purity}")
 
-    logger.info(f'Model: {model}, Object: {object_name}, News Vendors: {left_news_vendor} | {right_news_vendor}, Purity: {purity}')
+    logger.info(
+        f'Model: {model}, Object: {object_name}, News Vendors: {left_news_vendor} | {right_news_vendor}, Purity: {purity}')
 
 
 def relevant_data(data, columns=[]):
@@ -154,4 +176,5 @@ def purity_score(y_true, y_pred, object_name, left_news_vendor, right_news_vendo
 
 if __name__ == "__main__":
     e2e_handler(object_name=os.environ.get('OBJECT_NAME'), left_news_vendor=os.environ.get('LEFT_NEWS'),
-                right_news_vendor=os.environ.get('RIGHT_NEWS'), model=os.environ.get('MODEL'))
+                right_news_vendor=os.environ.get('RIGHT_NEWS'), model=os.environ.get('MODEL'),
+                preprocess=os.environ.get("PREPROCESS"))
