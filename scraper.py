@@ -5,10 +5,6 @@ import pandas as pd
 from sys import argv
 
 
-df = pd.read_csv('data/cnn-articles-Netanyahu.csv')
-pass
-
-
 def get_the_f_time(time_string):
     time_string = "March 8, 2021 2:33am EST"
 
@@ -63,9 +59,12 @@ class fox_scraper(scraper):
     base_url = "https://api.foxnews.com/search/web"
     source_name = 'fox'
 
-    def __init__(self, object_name, start_date, end_date):
+    def __init__(self, object_name, start_date, end_date=None):
         start_date = start_date.replace('/', '')
-        end_date = end_date.replace('/', '')
+        if end_date:
+            end_date = end_date.replace('/', '')
+        else:
+            end_date = datetime.now().strftime("%Y%m%d")
         super().__init__(object_name, start_date, end_date)
 
     def get_articles(self):
@@ -204,28 +203,44 @@ sources = {
     'cnn': cnn_scraper
 }
 cnn = None
+
+
+if __name__ == "__main__":
+    if len(argv) != 4:
+        print("Usage: python scraper.py <source> <object_name> <start_date>")
+        print("Example: python scraper.py netanyahu 2023/01/01")
+    else:
+        source, object_name, start_date, end_date = argv[1:]
+
+        if source in sources:
+            news_scraper = sources[source](object_name, start_date)
+        else:
+            print(
+                f"source {source} not supported. use one of {sources.keys()}")
+            exit(1)
+        news_scraper.get_articles().to_csv()
+
+
 try:
-    # scraper = fox_scraper("netanyahu", "2022/01/01",
-    #                       "2023/02/23").get_articles()
+    # fox = fox_scraper("netanyahu", "2022/01/01").get_articles()
     cnn = cnn_scraper("netanyahu", "2022/01/01",).get_articles()
 except Exception as e:
     print(e)
 finally:
     print("saving to csv")
     cnn.to_csv()
-
-# if __name__ == "__main__":
-#     if len(argv) != 5:
-#         print("Usage: python scraper.py <source> <object_name> <start_date> <end_date>")
-#         print("Example: python scraper.py netanyahu 2023/01/01 2023/01/10")
-#         exit(1)
-#     source, object_name, start_date, end_date = argv[1:]
-
-#     if source in sources:
-#         scraper = sources[source](object_name, start_date, end_date)
-#     else:
-#         print(f"source {source} not supported. use one of {sources.keys()}")
-#         exit(1)
-#     scraper = fox_scraper(object_name, start_date, end_date)
-#     scraper.get_articles()
-#     scraper.to_csv()
+    from time import sleep
+    print('waiting a bit to make sure', end='', )
+    for i in range(4):
+        print('.', end='')
+        sleep(0.5)
+        print('')
+    print("trying to read csv")
+    try:
+        d = pd.read_csv('data/cnn-articles-netanyahu.csv')
+        if (d and d.shape[1] > 1000):
+            print("ido ze oved!!")
+        else:
+            print("ido ata zodek!!")
+    except:
+        print("ido ata zodek!!")
