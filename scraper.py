@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from requests import get
-from datetime import datetime
+from parsel import Selector
+from datetime import datetime, timedelta
 import pandas as pd
 from sys import argv
 
@@ -40,6 +41,9 @@ def get_json(url, params={}):
 
 class scraper:
     articles = []
+    object_name = None
+    start_date = None
+    end_date = None
 
     def __init__(self, object_name, start_date, end_date):
         self.object_name = object_name
@@ -58,6 +62,7 @@ class scraper:
 class fox_scraper(scraper):
     base_url = "https://api.foxnews.com/search/web"
     source_name = 'fox'
+    unique = set()
 
     def __init__(self, object_name, start_date, end_date=None):
         start_date = start_date.replace('/', '')
@@ -68,8 +73,23 @@ class fox_scraper(scraper):
         super().__init__(object_name, start_date, end_date)
 
     def get_articles(self):
+        step = 30
+        const_start_date = datetime.strptime(self.start_date, "%Y%m%d")
+        const_end_date = datetime.strptime(self.end_date, "%Y%m%d")
+        number_of_days = (datetime.today() - const_start_date).days
+        for days_from_start in range(0, number_of_days,  step):
+            self.start_date = (
+                const_start_date + timedelta(days=days_from_start)).strftime("%Y%m%d")
+            self.end_date = (min(
+                [const_start_date + timedelta(days=days_from_start + step), const_end_date])).strftime("%Y%m%d")
+
+            self._get_articles()
+            if self.end_date == datetime.today().strftime("%Y%m%d"):
+                break
+        return self
+
+    def _get_articles(self):
         page_num = 1
-        self.articles = []
 
         next_page_index = 1
 
@@ -83,8 +103,8 @@ class fox_scraper(scraper):
             if not res:
                 print(" -- unexpedted end of pages")
                 break
-            total_count = res['queries']['request'][0].get(
-                'totalResults', None) or 0
+            total_count = int(res['queries']['request'][0].get(
+                'totalResults', None) or 0)
 
             if total_count == 0:
                 print(
@@ -100,6 +120,7 @@ class fox_scraper(scraper):
                 article = self._get_article(item)
                 if article:
                     self.articles.append(self._get_article(item))
+                    self.unique.add(article['url'])
 
             next_page = res['queries'].get('nextPage', [None])[0]
             next_page_index = next_page['startIndex'] if next_page else None
@@ -127,7 +148,7 @@ class fox_scraper(scraper):
         soup = BeautifulSoup(res.text, 'html.parser')
         temp = soup.find('div', class_='article-body')
         if not temp:
-            print(" -- skipping article, no article-body")
+            print(f" -- skipping article, no article-body: {article_url}")
             return None, None
         text = temp.text
 
@@ -140,8 +161,9 @@ class fox_scraper(scraper):
         return text, date
 
     def _is_valid(self, article):
-        if 'video' in article['url'].split('/'):
-            print(f" -- skipping video: {article['url']}")
+        url_parts = article['url'].split('/')
+        if 'video' in url_parts or 'radio' in url_parts:
+            print(f" -- skipping video/podcast: {article['url']}")
             return False
         return True
 
@@ -157,15 +179,17 @@ class cnn_scraper(scraper):
     def get_articles(self):
         count = 1
         total_count = None
+        outdated_count = 0
         params = {
             "q": self.object_name,
             "size": 50,
             "sort": "newest",
+            "from": 1,
             "type": "article",
             "page": 1,
         }
 
-        while ((not total_count) or len(self.articles) < total_count):
+        while ((not total_count) or count <= total_count) and outdated_count < 100:
             res = get_json(self.base_url, params=params)
             if not res:
                 return
@@ -182,8 +206,10 @@ class cnn_scraper(scraper):
                         self.articles.append(article)
                     else:
                         print(" -- skipping article, not in date range")
+                        outdated_count += 1
                 count += 1
             params['page'] += 1
+            params['from'] += 50
         return self
 
     def _get_article(self, item):
@@ -198,10 +224,46 @@ class cnn_scraper(scraper):
         return article
 
 
+class wsj_scraper(scraper):
+    base_url = 'https://www.wsj.com/search'
+
+    def __init__(self, object_name, start_date):
+        # start_date = datetime.strptime(start_date, "%Y/%m/%d")
+        super().__init__(object_name, start_date, None)
+
+    def get_articles(self):
+        params = {
+            "query": self.object_name,
+            "sort": "date-desc",
+            "startDate": self.start_date,
+            "source": "wsjie, blog, autowire, wsjpro"
+        }
+
+        res = get_json(self.base_url, params=params)
+        urls = self._get_article_urls(res)
+        for url in urls:
+            print(f"scraping article: {url}")
+            article = self._get_article(url)
+            if article:
+                self.articles.append(article)
+        return self
+
+    def _get_article(self, url):
+        pass
+
+    def _get_article_urls(self, res):
+        selector = Selector(text=res.text)
+        all_urls = selector.xpath(
+            "//article/div[contains(@class,'search-result')]//a/@href").extract()
+        return all_urls
+
+
 sources = {
     'fox': fox_scraper,
-    'cnn': cnn_scraper
+    'cnn': cnn_scraper,
+    'wsj': wsj_scraper,
 }
+
 cnn = None
 
 
@@ -222,13 +284,12 @@ if __name__ == "__main__":
 
 
 try:
-    # fox = fox_scraper("netanyahu", "2022/01/01").get_articles()
-    cnn = cnn_scraper("netanyahu", "2022/01/01",).get_articles()
+    news_scraper = sources['fox']("netanyahu", "2021/01/01",).get_articles()
 except Exception as e:
-    print(e)
+    print(e.with_traceback())
 finally:
     print("saving to csv")
-    cnn.to_csv()
+    news_scraper.to_csv()
     from time import sleep
     print('waiting a bit to make sure', end='', )
     for i in range(4):
@@ -238,7 +299,7 @@ finally:
     print("trying to read csv")
     try:
         d = pd.read_csv('data/cnn-articles-netanyahu.csv')
-        if (d and d.shape[1] > 1000):
+        if (not d.empty and d.shape[1] > 1000):
             print("ido ze oved!!")
         else:
             print("ido ata zodek!!")
