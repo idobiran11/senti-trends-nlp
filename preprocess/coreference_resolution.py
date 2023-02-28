@@ -48,10 +48,17 @@ def resolve_references(doc: Doc, object: str = None) -> str:
 
     # Iterate through every found cluster
     for cluster in clusters:
-        first_mention = cluster[0]
-        if object in first_mention.text:
+        correct_object = False
+        cluster_set = set()
+        for mention in cluster:
+            cluster_set.add(mention.text.lower())
+        for word in cluster_set:
+            if object.lower() in word:
+                correct_object = True
+                break
+        if correct_object:
             # Iterate through every other span in the cluster
-            for mention_span in list(cluster)[1:]:
+            for mention_span in list(cluster):
                 # Set first_mention as value for the first token in mention_span in the token_mention_mapper
                 token_mention_mapper[mention_span[0].idx] = object + mention_span[0].whitespace_
 

@@ -178,7 +178,7 @@ def print_create_eval_plots(object_name: str, left_news_vendor: str, right_news_
 
     print(f"Purity Score: {purity}")
 
-    logger.info(
+    print(
         f'Model: {model}, Object: {object_name}, News Vendors: {left_news_vendor} | {right_news_vendor}, Purity: {purity}')
 
 
