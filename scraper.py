@@ -1,3 +1,4 @@
+from time import sleep
 from bs4 import BeautifulSoup
 from requests import get
 from parsel import Selector
@@ -5,10 +6,14 @@ from datetime import datetime, timedelta
 import pandas as pd
 from sys import argv
 
+d = pd.read_csv('data/fox-articles-Netanyahu.csv')
+pass
+
 
 def get_the_f_time(time_string):
-    time_string = "March 8, 2021 2:33am EST"
-
+    original = time_string
+    time_string = time_string.strip()
+    time_string = time_string.strip('\n')
     if time_string[-3:] in ('EST', 'EDT'):
         time_string = time_string[:-4]
 
@@ -22,6 +27,10 @@ def get_the_f_time(time_string):
     if time_string[colonIndex - 1] == ' ':
         time_string = (time_string[:colonIndex] +
                        '0' + time_string[colonIndex:])
+
+    time_string = time_string.replace('Published', '')
+    time_string = time_string.strip()
+
     return datetime.strptime(time_string, "%B %d, %Y %I:%M%p")
 
 
@@ -55,6 +64,7 @@ class scraper:
             print("no articles to save")
             return
         df = pd.DataFrame(self.articles)
+        df = df.drop_duplicates(subset=['url'])
         df.to_csv(
             f'data/{self.source_name}-articles-{self.object_name}.csv', index=False)
 
@@ -119,8 +129,7 @@ class fox_scraper(scraper):
                     f"scraping article {int(next_page_index)+ i}: {item['title']}")
                 article = self._get_article(item)
                 if article:
-                    self.articles.append(self._get_article(item))
-                    self.unique.add(article['url'])
+                    self.articles.append(article)
 
             next_page = res['queries'].get('nextPage', [None])[0]
             next_page_index = next_page['startIndex'] if next_page else None
@@ -266,7 +275,6 @@ sources = {
 
 cnn = None
 
-
 if __name__ == "__main__":
     if len(argv) != 4:
         print("Usage: python scraper.py <source> <object_name> <start_date>")
@@ -283,25 +291,22 @@ if __name__ == "__main__":
         news_scraper.get_articles().to_csv()
 
 
+source = 'fox'
+news_scraper = sources[source]("netanyahu", "2021/01/01",).get_articles()
+
+print("saving to csv")
+news_scraper.to_csv()
+print('waiting a bit to make sure', end='', )
+for i in range(4):
+    print('.', end='')
+    sleep(0.5)
+    print('')
+print("trying to read csv")
 try:
-    news_scraper = sources['fox']("netanyahu", "2021/01/01",).get_articles()
-except Exception as e:
-    print(e.with_traceback())
-finally:
-    print("saving to csv")
-    news_scraper.to_csv()
-    from time import sleep
-    print('waiting a bit to make sure', end='', )
-    for i in range(4):
-        print('.', end='')
-        sleep(0.5)
-        print('')
-    print("trying to read csv")
-    try:
-        d = pd.read_csv('data/cnn-articles-netanyahu.csv')
-        if (not d.empty and d.shape[1] > 1000):
-            print("ido ze oved!!")
-        else:
-            print("ido ata zodek!!")
-    except:
+    d = pd.read_csv(f'data/{source}-articles-netanyahu.csv')
+    if (not d.empty):
+        print("ido ze oved!!")
+    else:
         print("ido ata zodek!!")
+except:
+    print("ido ata zodek!!")
