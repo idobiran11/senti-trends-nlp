@@ -154,7 +154,7 @@ def get_text_score(text_sent, word, normalized=False):
     num_of_sentences = len(text_sent)
     compound_count = 0
     for sent in text_sent:
-        if word in sent:
+        if word.lower() in sent.lower():
             relevant_corpus.append(sent)
             curr_score = nltk_analyze(sent)
             scores.append(curr_score)
