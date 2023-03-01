@@ -5,6 +5,7 @@ asumptions:
 1. we can identify subjects that the public opinion about can be seperated between the different sides of the political spectrum.
 2. crertain media sources can be identified with one side of the political spectrum
 """
+from os import environ
 import logging
 import os
 import jenkspy
@@ -16,9 +17,9 @@ import pandas as pd
 import seaborn as sns
 from models.simple_model_notebook import text_sentence_nltk_handler, norm_text_sentence_nltk_handler
 from preprocess.coreference_resolution import coref_preprocess, no_preprocess
-from utils.constants import ModelNames, PreprocessNames
+from utils.constants import ModelNames, PreprocessNames, SourceNames
 from utils.config_neptune import neptune_run, neptune
-
+from models.news_sentiment import news_sentiment_handler
 
 
 def create_logger():
@@ -43,27 +44,35 @@ logger = create_logger()
 
 
 def e2e_handler(object_name: str, left_news_vendor: str, right_news_vendor: str, model: str, preprocess: str):
-    algo_run = AlgoRun(object_name, left_news_vendor, right_news_vendor, model, preprocess)
+    algo_run = AlgoRun(object_name, left_news_vendor,
+                       right_news_vendor, model, preprocess)
     left_input_file = f'{left_news_vendor}-articles-{object_name}.csv'
     right_input_file = f'{right_news_vendor}-articles-{object_name}.csv'
     left_preprocessed_df = algo_run.preprocess_function(news_vendor=left_news_vendor, object_name=object_name,
-                                            input_csv_name=left_input_file)
+                                                        input_csv_name=left_input_file)
     right_preprocessed_df = algo_run.preprocess_function(news_vendor=right_news_vendor, object_name=object_name,
-                                             input_csv_name=right_input_file)
+                                                         input_csv_name=right_input_file)
     left_df = algo_run.model_function(object_name=object_name, news_vendor=left_news_vendor,
-                                         corpus=left_preprocessed_df)
+                                      corpus=left_preprocessed_df)
     right_df = algo_run.model_function(object_name=object_name, news_vendor=right_news_vendor,
-                                          corpus=right_preprocessed_df)
+                                       corpus=right_preprocessed_df)
 
-    print_create_eval_plots(object_name, left_news_vendor, right_news_vendor, model, left_df, right_df)
+    print_create_eval_plots(object_name, left_news_vendor,
+                            right_news_vendor, model, left_df, right_df)
     neptune_run.stop()
+
 
 class AlgoRun:
 
     def __init__(self, object_name: str, left_news_vendor: str, right_news_vendor: str, model: str, preprocess: str):
         self.initialize_neptune_run(object_name, left_news_vendor, right_news_vendor, model,
-                                                       preprocess, neptune_run)
+                                    preprocess, neptune_run)
         self.object_name = object_name
+        if left_news_vendor not in SourceNames.__dict__.values():
+            raise Exception("Non existent news vendor: " + left_news_vendor)
+        if right_news_vendor not in SourceNames.__dict__.values():
+            raise Exception("Non existent news vendor: " + right_news_vendor)
+
         self.left_news_vendor = left_news_vendor
         self.right_news_vendor = right_news_vendor
         self.model_name = model
@@ -78,10 +87,12 @@ class AlgoRun:
             self.model_function = text_sentence_nltk_handler
         elif self.model_name == ModelNames.NORM_NLTK:
             self.model_function = norm_text_sentence_nltk_handler
+        elif self.model_name == ModelNames.NEWS_SENTIMENT:
+            self.model_function = news_sentiment_handler
         else:
             raise Exception("No known model name set")
 
-    @staticmethod
+    @ staticmethod
     def initialize_neptune_run(object_name: str, left_news_vendor: str, right_news_vendor: str, model: str,
                                preprocess: str, run):
 
@@ -92,15 +103,19 @@ class AlgoRun:
         run['preprocess'] = preprocess
 
 
-
-
 def print_create_eval_plots(object_name: str, left_news_vendor: str, right_news_vendor: str, model: str, left_df,
                             right_df):
+
     left = relevant_data(left_df, ["date", "compound_s"])
     right = relevant_data(right_df, ["date", "compound_s"])
+
+    if left.empty or right.empty:
+        print("Empty data frame")
+        return
+
     print(f"Shape Left df: {left.shape}")
     print(f"Shape Right df: {right.shape}")
-    left, right = align_time_period(left, right)
+    # left, right = align_time_period(left, right)
     print(f"Updated Shape Left df: {left.shape}")
     print(f"Updated Shape Right df: {right.shape}")
     left['source'] = left_news_vendor
@@ -118,40 +133,53 @@ def print_create_eval_plots(object_name: str, left_news_vendor: str, right_news_
     result = pd.concat([left, right])
     result['Date'] = pd.to_datetime(result['Date'])
     fig = sns.boxplot(data=result, x=mdates.date2num(result.Date), y='source')
-    plt.title(f'{object_name}_{left_news_vendor}_{right_news_vendor}_{model} Distribution over time after equalizing')
+    plt.title(
+        f'{object_name}_{left_news_vendor}_{right_news_vendor}_{model} Distribution over time after equalizing')
     plt.xlabel('Time (to num)')
     plt.show()
     figure = fig.figure
-    neptune_run['eval/evaluation-plots-distirbution'].upload(neptune.types.File.as_image(figure))
+    neptune_run['eval/evaluation-plots-distirbution'].upload(
+        neptune.types.File.as_image(figure))
     sns.scatterplot(data=result, x="Date", y="score", hue="source")
-    plt.title(f'{object_name}_{left_news_vendor}_{right_news_vendor}_{model} Distribution over score and time')
+    plt.title(
+        f'{object_name}_{left_news_vendor}_{right_news_vendor}_{model} Distribution over score and time')
     plt.show()
     figure = fig.figure
-    neptune_run['eval/evaluation-plots-score-time'].upload(neptune.types.File.as_image(figure))
+    neptune_run['eval/evaluation-plots-score-time'].upload(
+        neptune.types.File.as_image(figure))
     sns.set(rc={'figure.figsize': (11.7, 8.27)})
     fig = sns.lineplot(data=result, x="Date", y="score", hue="source")
-    plt.title(f'{object_name}_{left_news_vendor}_{right_news_vendor}_{model} main Distribution over score and time')
+    plt.title(
+        f'{object_name}_{left_news_vendor}_{right_news_vendor}_{model} main Distribution over score and time')
     figure = fig.figure
-    neptune_run['eval/evaluation-plots-score-time-main'].upload(neptune.types.File.as_image(figure))
+    neptune_run['eval/evaluation-plots-score-time-main'].upload(
+        neptune.types.File.as_image(figure))
     sns.set(rc={'figure.figsize': (8, 6)})
     plt.show()
     fig = sns.boxplot(data=result, x="score", y="source")
-    plt.title(f'{object_name}_{left_news_vendor}_{right_news_vendor}_{model} Score Distribution by source')
+    plt.title(
+        f'{object_name}_{left_news_vendor}_{right_news_vendor}_{model} Score Distribution by source')
     figure = fig.figure
-    neptune_run['eval/evaluation-plots-score-time-source'].upload(neptune.types.File.as_image(figure))
+    neptune_run['eval/evaluation-plots-score-time-source'].upload(
+        neptune.types.File.as_image(figure))
     plt.show()
     fig = sns.stripplot(data=result, x="score", y="source", hue='source')
-    plt.title(f'{object_name}_{left_news_vendor}_{right_news_vendor}_{model} Score Distribution by source')
+    plt.title(
+        f'{object_name}_{left_news_vendor}_{right_news_vendor}_{model} Score Distribution by source')
     figure = fig.figure
-    neptune_run['eval/evaluation-distribution-by-source'].upload(neptune.types.File.as_image(figure))
+    neptune_run['eval/evaluation-distribution-by-source'].upload(
+        neptune.types.File.as_image(figure))
     plt.show()
-    threshold = jenkspy.jenks_breaks(result['score'], n_classes=2)  # supposed to give me the best threshold
+    # supposed to give me the best threshold
+    threshold = jenkspy.jenks_breaks(result['score'], n_classes=2)
 
     print(f'Threshold: {threshold[1]}')
 
     plt.figure(figsize=(5, 6))
-    fig = sns.stripplot(x='score', data=result, hue='source', jitter=True, alpha=0.65, edgecolor='none')
-    plt.title(f'{object_name}_{left_news_vendor}_{right_news_vendor} Clustered score plot')
+    fig = sns.stripplot(x='score', data=result, hue='source',
+                        jitter=True, alpha=0.65, edgecolor='none')
+    plt.title(
+        f'{object_name}_{left_news_vendor}_{right_news_vendor} Clustered score plot')
     sns.despine()
     locs, labels = plt.xticks()
     plt.xticks(locs, map(lambda x: "%.1f" % x, locs))
@@ -159,21 +187,28 @@ def print_create_eval_plots(object_name: str, left_news_vendor: str, right_news_
     plt.yticks([])
     plt.vlines(threshold[1], ymax=1, ymin=-1)
     figure = fig.figure
-    neptune_run['eval/evaluation-clustered-score-plot'].upload(neptune.types.File.as_image(figure))
+    neptune_run['eval/evaluation-clustered-score-plot'].upload(
+        neptune.types.File.as_image(figure))
     plt.show()
 
     if top == 'left':
-        result["cluster"] = np.where(result['score'] > threshold[1], 'left', 'right')
+        result["cluster"] = np.where(
+            result['score'] > threshold[1], 'left', 'right')
     else:
-        result["cluster"] = np.where(result['score'] > threshold[1], 'right', 'left')
+        result["cluster"] = np.where(
+            result['score'] > threshold[1], 'right', 'left')
 
-    fig = sns.scatterplot(data=result, y='score', x='Date', hue='source', style='cluster', edgecolor='none', alpha=0.65)
-    plt.title(f'{object_name}_{left_news_vendor}_{right_news_vendor} By Labelled Cluster ')
+    fig = sns.scatterplot(data=result, y='score', x='Date',
+                          hue='source', style='cluster', edgecolor='none', alpha=0.65)
+    plt.title(
+        f'{object_name}_{left_news_vendor}_{right_news_vendor} By Labelled Cluster ')
     figure = fig.figure
-    neptune_run['eval/evaluation-labelled-cluster'].upload(neptune.types.File.as_image(figure))
+    neptune_run['eval/evaluation-labelled-cluster'].upload(
+        neptune.types.File.as_image(figure))
     plt.show()
 
-    purity = purity_score(result["source"], result["cluster"], object_name, left_news_vendor, right_news_vendor)
+    purity = purity_score(result["source"], result["cluster"],
+                          object_name, left_news_vendor, right_news_vendor)
     neptune_run["purity"] = purity
 
     print(f"Purity Score: {purity}")
@@ -192,6 +227,8 @@ def relevant_data(data, columns=[]):
 
 
 def align_time_period(left, right):
+    original_left = left
+    original_right = right
     left['Date'] = pd.to_datetime(left['Date'])
     right['Date'] = pd.to_datetime(right['Date'])
     l_min_date = left['Date'].min()
@@ -204,6 +241,9 @@ def align_time_period(left, right):
     right = right[right.Date > lower_border]
     left = left[left.Date < upper_border]
     left = left[left.Date > lower_border]
+    if left.empty or right.empty:
+        return original_left, original_right
+
     return left, right
 
 
@@ -212,7 +252,8 @@ def purity_score(y_true, y_pred, object_name, left_news_vendor, right_news_vendo
     contingency_matrix = metrics.cluster.contingency_matrix(y_true, y_pred)
     disp = metrics.ConfusionMatrixDisplay(confusion_matrix=contingency_matrix)
     disp.plot()
-    plt.title(f'{object_name}_{left_news_vendor}_{right_news_vendor} Confusion Matrix')
+    plt.title(
+        f'{object_name}_{left_news_vendor}_{right_news_vendor} Confusion Matrix')
     plt.savefig('confmatrix.jpg')
     neptune_run['eval/evaluation-confusion-matrix'].upload('confmatrix.jpg')
     # return purity

@@ -6,3 +6,5 @@ nltk
 sklearn
 dataclasses
 neptune-client
+jenkspy
+seaborn
