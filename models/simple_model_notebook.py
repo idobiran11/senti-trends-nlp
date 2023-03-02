@@ -10,6 +10,7 @@ import math
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.tokenize import sent_tokenize
 from utils.config_neptune import neptune_run
+from plot_stats import plot_stats
 
 OBJECT_NAME = "Netanyahu"
 NEWS_VENDOR = "CNN"
@@ -48,6 +49,8 @@ def plot_graphs(scores, object_name, news_vendor):
     filepath = f'data/output_plots/simple_model_{object_name}_{news_vendor}.png'
     plt.savefig(filepath)
     neptune_run[f"build/{news_vendor}-Model-Comparison"].upload(filepath)
+
+    plot_stats(scores_graph, news_vendor)
 
     return scores_graph
 
@@ -151,13 +154,14 @@ def get_text_score(text_sent, word, normalized=False):
     relevant_corpus = []
     scores = []
     total_score = {'neg_s': 0.0, 'neu_s': 0.0, 'pos_s': 0.0, 'compound_s': 0.0}
-    num_of_sentences = len(text_sent)
+    num_of_sentences = 0
     compound_count = 0
     for sent in text_sent:
         if word.lower() in sent.lower():
             relevant_corpus.append(sent)
             curr_score = nltk_analyze(sent)
             scores.append(curr_score)
+            num_of_sentences += 1
 
             total_score["neg_s"] += curr_score["neg"]
             total_score["neu_s"] += curr_score["neu"]
@@ -180,11 +184,11 @@ def get_text_score(text_sent, word, normalized=False):
             total_score["compound_s"] = total_score["compound_s"] / compound_count
         else:
             total_score["compound_s"] = 0
-    return relevant_corpus, scores, total_score
+    return relevant_corpus, scores, total_score, num_of_sentences
 
 
 def calc_scores_on_corpus(corpus, name, normalized=False):
-    text_score_df = pd.DataFrame(columns=['title', 'date', 'text_score', 'sentences_score'])
+    text_score_df = pd.DataFrame(columns=['title', 'date', 'text', 'text_score', 'sentences_score', 'num_of_sentences'])
     for index, row in corpus.iterrows():
         # for row in corpus:
         text = row["text"]
@@ -194,10 +198,10 @@ def calc_scores_on_corpus(corpus, name, normalized=False):
         # seperate to sentences
         text_sent = sentences_split(text)
         # get score
-        relevant_text, relevant_scores, total_score = get_text_score(text_sent, name, normalized)
+        relevant_text, relevant_scores, total_score, num_of_sentences = get_text_score(text_sent, name, normalized)
         # save row to df
         df = pd.DataFrame(
-            {"index": [index], "title": [row["title"]], "date": [row['date']], "text_score": [whole_text_score],
+            {"index": [index], "title": [row["title"]], "text": [row["text"]], "num_of_sentences": [row["num_of_sentences"]], "date": [row['date']], "text_score": [whole_text_score],
              "sentences_score": [total_score]})
         text_score_df = text_score_df.append(df)
 
