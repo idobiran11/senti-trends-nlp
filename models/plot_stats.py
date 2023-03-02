@@ -2,12 +2,13 @@ import plotly.graph_objs as go
 import numpy as np
 import plotly.offline as pyo
 from plotly.subplots import make_subplots
-pyo.init_notebook_mode()
 from sklearn.decomposition import TruncatedSVD,PCA
 from statsmodels.tsa.seasonal import seasonal_decompose
 import seaborn as sns
-from wordcloud import WordCloud,STOPWORDS
+import nltk
 from nltk.corpus import stopwords
+nltk.download('stopwords')
+from wordcloud import WordCloud, STOPWORDS
 from utils.config_neptune import neptune_run, neptune
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -110,8 +111,11 @@ def plot_stats(scores_graph, news_vendor):
     Most_Negative = scores_graph[scores_graph['neg_s'].between(neg_tresh,1)]
 
     stopwords_g = stopwords.words('english')
-    Most_Positive['text']=Most_Positive['text'].str.lower()
-    Most_Negative['text']=Most_Negative['text'].str.lower()
+    print(f"Most Negative: {Most_Negative['title']}")
+    print(f"Most Positive: {Most_Positive['title']}")
+
+    Most_Positive['text'] = Most_Positive['text'].str.lower()
+    Most_Negative['text'] = Most_Negative['text'].str.lower()
 
     Most_Positive_text = ' '.join(Most_Positive['text'])
     Most_Negative_text = ' '.join(Most_Negative['text'])

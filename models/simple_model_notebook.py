@@ -10,7 +10,7 @@ import math
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.tokenize import sent_tokenize
 from utils.config_neptune import neptune_run
-from plot_stats import plot_stats
+from models.plot_stats import plot_stats
 
 OBJECT_NAME = "Netanyahu"
 NEWS_VENDOR = "CNN"
@@ -154,14 +154,14 @@ def get_text_score(text_sent, word, normalized=False):
     relevant_corpus = []
     scores = []
     total_score = {'neg_s': 0.0, 'neu_s': 0.0, 'pos_s': 0.0, 'compound_s': 0.0}
-    num_of_sentences = 0
+    num_of_sentences = len(text_sent)
     compound_count = 0
     for sent in text_sent:
         if word.lower() in sent.lower():
             relevant_corpus.append(sent)
             curr_score = nltk_analyze(sent)
             scores.append(curr_score)
-            num_of_sentences += 1
+         #   num_of_sentences += 1
 
             total_score["neg_s"] += curr_score["neg"]
             total_score["neu_s"] += curr_score["neu"]
@@ -174,11 +174,11 @@ def get_text_score(text_sent, word, normalized=False):
                 if math.fabs(curr_score["compound"]) > normalizing_threshold:
                     total_score["compound_s"] += curr_score["compound"]
                     compound_count += 1
-    total_score["neg_s"] = total_score["neg_s"] / num_of_sentences
-    total_score["neu_s"] = total_score["neu_s"] / num_of_sentences
-    total_score["pos_s"] = total_score["pos_s"] / num_of_sentences
+    total_score["neg_s"] = total_score["neg_s"] / max(num_of_sentences, 1)
+    total_score["neu_s"] = total_score["neu_s"] / max(num_of_sentences, 1)
+    total_score["pos_s"] = total_score["pos_s"] / max(num_of_sentences, 1)
     if not normalized:
-        total_score["compound_s"] = total_score["compound_s"] / num_of_sentences
+        total_score["compound_s"] = total_score["compound_s"] / max(num_of_sentences, 1)
     else:
         if compound_count > 0:
             total_score["compound_s"] = total_score["compound_s"] / compound_count
@@ -201,7 +201,7 @@ def calc_scores_on_corpus(corpus, name, normalized=False):
         relevant_text, relevant_scores, total_score, num_of_sentences = get_text_score(text_sent, name, normalized)
         # save row to df
         df = pd.DataFrame(
-            {"index": [index], "title": [row["title"]], "text": [row["text"]], "num_of_sentences": [row["num_of_sentences"]], "date": [row['date']], "text_score": [whole_text_score],
+            {"index": [index], "title": [row["title"]], "text": [row["text"]], "num_of_sentences": [num_of_sentences], "date": [row['date']], "text_score": [whole_text_score],
              "sentences_score": [total_score]})
         text_score_df = text_score_df.append(df)
 
