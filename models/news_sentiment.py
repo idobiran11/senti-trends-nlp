@@ -3,7 +3,9 @@ from NewsSentiment import TargetSentimentClassifier
 from nltk.tokenize import sent_tokenize
 from numpy import tanh
 from models.utils import run_pipeline
+import pandas as pd
 tsc = TargetSentimentClassifier()
+
 
 # {'neg_s': 0.01972727272727273, 'neu_s': 0.15081818181818185, 'pos_s': 0.011272727272727273, 'compound_s': -0.02520454545454546}
 
@@ -23,7 +25,7 @@ def classify(corpus, name):
 
 
 def calc_compound_score(pos, neu, neg):
-    return tanh(2 * (pos - neg)*neu)
+    return tanh((2 * (pos - neg)) / neu)
 
 
 def analyze_corpus(corpus, name):
@@ -31,7 +33,7 @@ def analyze_corpus(corpus, name):
 
     text_score_df = pd.DataFrame(
         columns=['title', 'date', 'text_score', 'sentences_score'])
-    for index, row in corpus.iterrows():
+    for index, row in corpus.iloc[:100].iterrows():
         # for row in corpus:
         text = row["text"]
         text = text.lower()
@@ -86,10 +88,11 @@ def get_sent_score(text, name):
     scores = []
     total_score = {'neg_s': 0.0, 'neu_s': 0.0, 'pos_s': 0.0, 'compound_s': 0.0}
     text_sent = sent_tokenize(text)
-    num_of_sentences = len(text_sent)
+    num_of_relevant = 0
     for text in text_sent:
         name_pos = text.find(name)
         if name_pos > -1:
+            num_of_relevant += 1
             relevant_corpus.append(text)
             curr_score = infer(text, name)
             scores.append(curr_score)
@@ -100,11 +103,11 @@ def get_sent_score(text, name):
 
             total_score["compound_s"] += calc_compound_score(
                 curr_score["pos"], curr_score["neu"], curr_score["neg"])
-
-    total_score["neg_s"] = total_score["neg_s"] / num_of_sentences
-    total_score["neu_s"] = total_score["neu_s"] / num_of_sentences
-    total_score["pos_s"] = total_score["pos_s"] / num_of_sentences
-    total_score["compound_s"] = total_score["compound_s"] / num_of_sentences
+    if num_of_relevant > 0:
+        total_score["neg_s"] = total_score["neg_s"] / num_of_relevant
+        total_score["neu_s"] = total_score["neu_s"] / num_of_relevant
+        total_score["pos_s"] = total_score["pos_s"] / num_of_relevant
+        total_score["compound_s"] = total_score["compound_s"] / num_of_relevant
 
     return relevant_corpus, scores, total_score
 
