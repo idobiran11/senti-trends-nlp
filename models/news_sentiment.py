@@ -49,13 +49,16 @@ def analyze_corpus(corpus, name):
         # seperate to sentences
 
         # get score
-        relevant_text, total_score = get_sent_score(
+        label, total_score = get_sent_score(
             text, name)
         # save row to df
         df = pd.DataFrame(
             {"index": [index], "title": [row["title"]], "date": [row['date']],
              "text_score": [{"pos": 0, "neg": 0, "neu": 0, "compound": 0, }],
-             "sentences_score": [total_score]})
+             "sentences_score": [total_score], label+'_lbl': [1]})
+        for col in ("pos", "neg", "neu"):
+            if col != label:
+                df[col+'_lbl'] = [0]
         text_score_df = text_score_df.append(df)
 
     return text_score_df
@@ -121,7 +124,13 @@ def get_sent_score(text, name):
     total_score = {'neg_s': 0.0, 'neu_s': 0.0, 'pos_s': 0.0, 'compound_s': 0.0}
     text_sent = sent_tokenize(text)
     num_of_relevant = 0
+    votes = {
+        'neg': 0,
+        'pos': 0,
+        'neu': 0,
+    }
     for text in text_sent:
+
         name_pos = text.find(name)
         if name_pos > -1:
             num_of_relevant += 1
@@ -135,35 +144,45 @@ def get_sent_score(text, name):
 
             total_score["compound_s"] += calc_compound_score(
                 curr_score["pos"], curr_score["neu"], curr_score["neg"])
+
+            curr_score = {key: value for key,
+                          value in curr_score.items() if key[-1] != 's'}
+            votes[max(curr_score.items(), key=lambda item: item[1])[0]] += 1
+
     if num_of_relevant > 0:
         total_score["neg_s"] = total_score["neg_s"] / num_of_relevant
         total_score["neu_s"] = total_score["neu_s"] / num_of_relevant
         total_score["pos_s"] = total_score["pos_s"] / num_of_relevant
         total_score["compound_s"] = total_score["compound_s"] / num_of_relevant
 
-    return relevant_corpus, total_score
+    return max(votes.items(), key=lambda item: item[1])[0], total_score
 
 # df = pd.read_csv("data/fox-articles-netanyahu.csv")
+
+
+def rm_chars(st):
+    new_st = ''
+    for i, char in enumerate(st):
+        if char in ('\n', '\xa0'):
+            continue
+        elif (i < len(st) - 1):
+            if (char == ' ' and st[i+1] == ' '):
+                continue
+        else:
+            new_st += char
+    return new_st
 
 
 def news_sentiment_handler(object_name, news_vendor, corpus, output_directory="data/output_data"):
     def eda(df: pd.DataFrame):
 
-        df.text = df.text.apply(lambda text: text.replace(
-            '\n', ' ').replace('\xa0', ' ').replace('  ', ' '))
+        df.text = df.text.apply(rm_chars)
         df = df.rename(columns={'timestamp': 'date'})
 
         return df
-
-    # def run_pupline2():
-    classify_df = classify(corpus, object_name)
-    classify_df.to_csv(
-        f"{output_directory}/{object_name}_{news_vendor}_news_sentiment_lbl.csv", index=False)
 
     file_path = f"{output_directory}/{object_name}_{news_vendor}_news_sentiment.csv"
 
     return run_pipeline(eda_func=eda,
                         score_func=analyze_corpus, object_name=object_name,
                         news_vendor=news_vendor, corpus=corpus, file_path=file_path)
-
-    # return run_pupline2()
