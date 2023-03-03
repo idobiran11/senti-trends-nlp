@@ -1,0 +1,101 @@
+title,date,index,neg_lbl,pos_lbl,neu_lbl,neg_s,neu_s,pos_s,compound_s,pos,neg,neu,compound
+"Trump slams his VP, says Pence 'didn't have the courage' to ...",2021-01-06 14:44:00,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump endorses Sarah Huckabee Sanders for Arkansas governor ...,2021-01-25 23:54:00,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Trump pardons Steve Bannon, Lil Wayne, dozens of others; also ...",2021-01-20 12:05:00,2.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Capitol rioters could face up to 10 years in prison under Trump ...,2021-01-07 14:38:00,3.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump acknowledged he bears some blame for Capitol riot in ...,2021-01-11 20:00:00,4.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Trump condemns 'heinous attack' on Capitol, calls for 'healing and ...",2021-01-08 07:43:00,5.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Audio released of Trump call to Raffensperger | Fox News,2021-01-04 03:52:00,6.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Trump says he, Pence in 'total agreement' VP has 'power' to block ...",2021-01-05 22:59:00,7.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Trump departs White House, tells supporters in final address as ...",2021-01-20 09:35:00,8.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Trump supporters, lawmakers react to Twitter ban | Fox News",2021-01-08 21:29:00,9.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump does not have future in Republican Party after Capitol riot ...,2021-01-13 17:23:00,10.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Twitter suspends @realDonaldTrump account permanently | Fox News,2021-01-08 22:10:00,11.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Biden to sign 17 executive actions, orders to reverse Trump policies ...",2021-01-20 05:05:00,12.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"As Trump's border wall tops 450-mile goal, CBP chief says more ...",2021-01-05 13:04:00,13.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump signs anti-female genital mutilation law that increases ...,2021-01-06 14:43:00,14.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump urged Georgia election official to 'find' votes in phone call ...,2021-01-03 16:56:00,15.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Trump impeached by House over Capitol riots, becomes first ...",2021-01-13 16:36:00,16.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Jonathan Turley: It's legally absurd to claim Trump committed crime ...,2021-01-06 05:00:00,17.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump says election was 'stolen' and 'these are the things and ...,2021-01-06 18:44:00,18.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+New York jeweler shares Tiffany Trump engagement ring details ...,2021-01-22 12:01:00,19.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Harvard students seek to revoke Trump graduates' diplomas after ...,2021-01-14 19:32:00,20.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Ari Fleischer: Trump is a political wrecking ball — but with ...,2021-01-15 06:00:00,21.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump impeached for second time after Capitol riot | Fox News,2021-01-14 03:44:00,22.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump leaves letter for Biden before departing White House | Fox ...,2021-01-20 14:34:00,23.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump says 'I kept my promises' as he marks 450 miles of border ...,2021-01-12 17:21:00,24.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"James Mattis denounces Trump, says he will be 'left a man without a ...",2021-01-06 23:32:00,25.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump speech before Capitol riot not enough for impeachment ...,2021-01-10 11:35:00,26.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Trump says he will 'never concede,' pressures Pence to send ...",2021-01-06 12:32:00,27.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump rebuts NY Times '1619 Project' with '1776 Report' urging ...,2021-01-18 21:03:00,28.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Facebook blocks Trump indefinitely after Capitol riot response | Fox ...,2021-01-07 11:12:00,29.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Twitter bans Trump, but Iranian ayatollah, Louis Farrakhan, Chinese ...",2021-01-08 23:22:00,30.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+'Hang Mike Pence' trends on Twitter after platform suspends Trump ...,2021-01-09 11:24:00,31.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Indoor dining gets OK in big cities – just after Trump leaves office ...,2021-01-23 05:10:00,32.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump's booming stock market in peril as Biden assumes presidency ...,2021-01-20 07:45:00,33.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Pelosi calls for 25th Amendment, impeachment to remove Trump ...",2021-01-07 15:04:00,34.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Melania Trump's Mar-a-Lago outfit criticized online after couple ...,2021-01-20 22:07:00,35.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+McConnell says Trump 'provoked' the Capitol riot as Senate weighs ...,2021-01-19 13:53:00,36.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump revokes rule banning White House staff from lobbying in last ...,2021-01-20 09:15:00,37.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Donald Trump, Melania Trump celebrate 16 years of marriage: A ...",2021-01-22 11:04:00,38.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Michael Moore predicts Donald Trump's 'imprisonment' during ...,2021-01-21 09:15:00,39.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump lawyer slams Georgia Secretary of State Raffensperger for ...,2021-01-04 15:19:00,40.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Rand Paul calls Trump impeachment trial 'dead on arrival' after 45 ...,2021-01-26 23:56:00,41.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Anderson Cooper slammed for comment on Trump supporters and ...,2021-01-08 14:02:00,42.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Stripe stops processing payments for Trump campaign website | Fox ...,2021-01-11 03:55:00,43.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Ben & Jerry's calls for Trump's removal after Capitol riots, urges 25th ...",2021-01-08 15:03:00,44.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+William McGurn: Capitol riots and all of Donald Trump's deplorabes ...,2021-01-12 07:42:00,45.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Katie Couric cheers on Trump's impeachment, says GOP lawmakers ...",2021-01-16 01:51:00,46.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+House Democrats introduce Trump impeachment resolution ...,2021-01-11 14:38:00,47.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Trump deletes Capitol tweets that sent account into lockdown, will ...",2021-01-07 10:29:00,48.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+McCarthy reacts to leaked phone call of Trump pressing Georgia's ...,2021-01-04 12:52:00,49.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"GOP sours on Trump, but many cling to election hoax | Fox News",2021-01-15 16:15:00,50.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump supporters on American Airlines flight clash with passengers ...,2021-01-07 09:34:00,51.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Ivanka Trump and Jared Kushner lease Miami condo following $32 ...,2021-01-20 08:03:00,52.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Dems determined to 'punish' and 'degrade' Trump supporters with ...,2021-01-21 13:59:00,53.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Trump slams China's Huawei, halting shipments from Intel, others ...",2021-01-17 14:51:00,54.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+YouTube suspends Trump's ability to upload content indefinitely ...,2021-01-13 00:42:00,55.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"McConnell furious with president, supports move to initiate ...",2021-01-12 19:03:00,56.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Donald Trump pardons, commutes Lil Wayne, Kodak Black ...",2021-01-20 08:21:00,57.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Howard Kurtz: Media personalities' call to 'deprogram' Trump voters ...,2021-01-19 17:53:00,58.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Deroy Murdock: Final, fair look at Trump presidency shows ...",2021-01-16 07:00:00,59.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump exits White House with drop in approval ratings | Fox News,2021-01-19 10:40:00,60.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Gab gaining 10,000 users per hour, CEO claims, after Trump's ...",2021-01-10 03:36:00,61.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump acquitted in second impeachment trial on charge of inciting ...,2021-02-13 15:50:00,62.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+How much will Trump impeachment trial cost? | Fox Business,2021-02-13 18:20:00,63.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump's impeachment trial: Everything you need to know | Fox News,2021-02-10 06:22:00,64.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump says he requested 10K National Guard troops at Capitol on ...,2021-03-01 06:44:00,65.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Gold-colored Trump statue at CPAC draws crowd | Fox News,2021-02-27 15:01:00,66.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trumps received COVID-19 vaccines at White House in January ...,2021-03-02 08:33:00,67.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Former Trump campaign communications director Murtaugh joining ...,2021-03-01 08:01:00,68.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Trump, ex-campaign manager Brad Parscale, meet at Mar-a-Lago ...",2021-02-16 20:37:00,69.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"John Kerry 'colluded' with Iran to undermine Trump, report says | Fox ...",2021-02-22 15:09:00,70.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump resigns from SAG: 'I no longer wish to be associated with your ...,2021-02-04 12:52:00,71.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Donald Trump mourns passing of Rush Limbaugh: 'He is a legend ...,2021-02-17 13:32:00,72.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Twitter says Trump wouldn't be allowed back on platform even if he ...,2021-02-10 09:56:00,73.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+What is Trump's net worth now? | Fox Business,2021-02-03 06:19:00,74.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Lincoln Project's Rick Wilson raised $64G for anti-Trump film that ...,2021-02-16 15:53:00,75.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump residency at Mar-a-Lago under Palm Beach legal review ...,2021-02-01 13:54:00,76.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Supreme Court won't halt turnover of Trump's tax records | Fox News,2021-02-22 10:01:00,77.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Nikki Haley says Trump 'let us down' | Fox News,2021-02-12 11:43:00,78.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Nikki Haley praises Trump's 'strong' CPAC speech after rebuking ...,2021-03-01 13:38:00,79.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump reveals story behind Rush Limbaugh's Presidential Medal of ...,2021-02-17 22:31:00,80.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+7 Republican senators vote to convict Trump on incitement charge ...,2021-02-13 16:24:00,81.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+A Palm Beach property once owned by Donald Trump sells for close ...,2021-02-09 08:20:00,82.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Maxine Waters tries walking back violent rhetoric against Trump ...,2021-02-07 18:57:00,83.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Dems in Trump trial use graphic video of Capitol attack; Trump ...,2021-02-09 15:56:00,84.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Mike Lee's objection to 'false' Trump impeachment evidence causes ...,2021-02-11 07:56:00,85.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Andrew McCarthy: Trump impeachment trial – what you need to ...,2021-02-08 06:00:00,86.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Impeachment trial: How many Senate votes does it take to convict ...,2021-02-13 15:33:00,87.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump property next to Mar-a-Lago hits market for $49M | Fox ...,2021-03-01 15:06:00,88.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+LIVE UPDATES: Senators avoid witnesses in Trump impeachment ...,2021-02-13 12:57:00,89.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump urges all Americans to get COVID vaccine: 'It's a safe vaccine ...,2021-03-16 20:12:00,90.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump returning to social media with 'his own platform' in 2-3 months ...,2021-03-21 13:53:00,91.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Trump slams Biden immigration policies: 'There's nothing, there's no ...",2021-03-27 21:52:00,92.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Trump takes credit for 'China virus' vaccine: 'I hope everyone ...,2021-03-10 20:04:00,93.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Former President Trump tells 'Fox News Primetime' massive migrant ...,2021-03-16 17:29:00,94.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Facebook removes video of Trump interview with daughter-in-law ...,2021-03-31 10:23:00,95.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+Frustrated Trump demands to know if Special Counsel Durham is ...,2021-03-26 20:20:00,96.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Fauci, who opposed China travel ban and praised their ...",2021-03-11 15:13:00,97.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Trump, GOP candidates embrace new digital platform to protect from ...",2021-04-01 12:00:00,98.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
+"Psaki acknowledges 'big problem' at border, blames Trump ...",2021-03-15 14:33:00,99.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0
