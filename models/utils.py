@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 import warnings
 
 
-def run_pipeline(lda_func, score_func, object_name, news_vendor, corpus, file_path):
-    if lda_func:
-        corpus = lda_func(corpus)
+def run_pipeline(eda_func, score_func, object_name, news_vendor, corpus, file_path):
+    if eda_func:
+        corpus = eda_func(corpus)
 
     scores = score_func(corpus, object_name)
     scores_graph = plot_graphs(scores, object_name, news_vendor)

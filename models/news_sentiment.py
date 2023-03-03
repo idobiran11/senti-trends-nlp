@@ -11,17 +11,24 @@ tsc = TargetSentimentClassifier()
 
 
 def classify(corpus, name):
-    text_score_df = pd.DataFrame(
+    text_classification_df = pd.DataFrame(
         columns=['title', 'date', 'pos', 'neg', 'neu'])
-    for index, row in corpus.iterrows():
+    name = name.lower()
+    for index, row in corpus.iloc[:100].iterrows():
+        text = row["text"].lower()
+        var, label = classify_sent(text, name)
+        df = pd.DataFrame({
+            "index": [index],
+            "title": [row["title"]],
+            "date": [row["timestamp"]],
+            label: 1,
+        })
+        for col in ("pos", "neg", "neu"):
+            if col != label:
+                df[col] = [0]
+        text_classification_df = text_classification_df.append(df)
 
-        text = row["text"]
-        text = text.lower()
-
-        score = infer(text, name)
-        text_score_df.append(pd.DataFrame({"title": [row["title"]], "date": [row['date']], "pos": [
-            score["pos"]], "neg": [score["neg"]], "neu": [score["neu"]]}))
-    return text_score_df
+    return text_classification_df
 
 
 def calc_compound_score(pos, neu, neg):
@@ -42,7 +49,7 @@ def analyze_corpus(corpus, name):
         # seperate to sentences
 
         # get score
-        relevant_text, relevant_scores, total_score = get_sent_score(
+        relevant_text, total_score = get_sent_score(
             text, name)
         # save row to df
         df = pd.DataFrame(
@@ -79,6 +86,31 @@ def to_nltk_style(scores):
     return res
 
 
+def classify_sent(text, name):
+    relevant_corpus = []
+    votes = {
+        'neg': 0,
+        'pos': 0,
+        'neu': 0,
+    }
+
+    total_score = {'neg_s': 0.0, 'neu_s': 0.0, 'pos_s': 0.0, 'compound_s': 0.0}
+    text_sent = sent_tokenize(text)
+    num_of_relevant = 0
+
+    for text in text_sent:
+        name_pos = text.find(name)
+        if name_pos > -1:
+            num_of_relevant += 1
+            relevant_corpus.append(text)
+            curr_score = infer(text, name, name_pos)
+            curr_score = {key: value for key,
+                          value in curr_score.items() if key[-1] != 's'}
+            votes[max(curr_score.items(), key=lambda item: item[1])[0]] += 1
+
+    return relevant_corpus, max(votes.items(), key=lambda item: item[1])[0]
+
+
 def get_sent_score(text, name):
     """
     get a word and text splitted to sentences.
@@ -94,7 +126,7 @@ def get_sent_score(text, name):
         if name_pos > -1:
             num_of_relevant += 1
             relevant_corpus.append(text)
-            curr_score = infer(text, name)
+            curr_score = infer(text, name, name_pos)
             scores.append(curr_score)
 
             total_score["neg_s"] += curr_score["neg"]
@@ -109,13 +141,13 @@ def get_sent_score(text, name):
         total_score["pos_s"] = total_score["pos_s"] / num_of_relevant
         total_score["compound_s"] = total_score["compound_s"] / num_of_relevant
 
-    return relevant_corpus, scores, total_score
+    return relevant_corpus, total_score
 
 # df = pd.read_csv("data/fox-articles-netanyahu.csv")
 
 
 def news_sentiment_handler(object_name, news_vendor, corpus, output_directory="data/output_data"):
-    def lda(df: pd.DataFrame):
+    def eda(df: pd.DataFrame):
 
         df.text = df.text.apply(lambda text: text.replace(
             '\n', ' ').replace('\xa0', ' ').replace('  ', ' '))
@@ -123,7 +155,15 @@ def news_sentiment_handler(object_name, news_vendor, corpus, output_directory="d
 
         return df
 
+    # def run_pupline2():
+    classify_df = classify(corpus, object_name)
+    classify_df.to_csv(
+        f"{output_directory}/{object_name}_{news_vendor}_news_sentiment_lbl.csv", index=False)
+
     file_path = f"{output_directory}/{object_name}_{news_vendor}_news_sentiment.csv"
-    return run_pipeline(lda_func=lda,
+
+    return run_pipeline(eda_func=eda,
                         score_func=analyze_corpus, object_name=object_name,
                         news_vendor=news_vendor, corpus=corpus, file_path=file_path)
+
+    # return run_pupline2()
