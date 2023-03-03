@@ -7,4 +7,8 @@ sklearn
 dataclasses
 neptune-client
 jenkspy
+plotly
+statsmodels
+wordcloud
+matplotlib
 seaborn

@@ -1,4 +1,5 @@
 # import
+from models.plot_stats import plot_stats
 from utils.config_neptune import neptune_run
 from nltk.tokenize import sent_tokenize
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
@@ -21,6 +22,53 @@ _nltk_analyzer = None
 nltk.download('vader_lexicon')
 nltk.download('punkt')
 _nltk_analyzer = SentimentIntensityAnalyzer()
+
+
+def plot_graphs(scores, object_name, news_vendor):
+    scores_graph = pd.concat([scores.drop(['sentences_score'], axis=1), scores['sentences_score'].apply(pd.Series)],
+                             axis=1)
+    scores_graph = pd.concat([scores_graph.drop(['text_score'], axis=1), scores_graph['text_score'].apply(pd.Series)],
+                             axis=1)
+    plot_1 = scores_graph.plot(x="date", y=['neg_s', 'neu_s', 'pos_s', 'compound_s'],
+                               kind="line", figsize=(15, 6),
+                               title=f'Sentences Model Score for {object_name} on {news_vendor}')
+    plot_1.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
+    filepath = "plot_1.png"
+    plt.savefig(filepath)
+    neptune_run[f"build/{news_vendor}-sentences"].upload(filepath)
+    plot_2 = scores_graph.plot(x="date", y=['neg', 'neu', 'pos', 'compound'],
+                               kind="line", figsize=(15, 6),
+                               title=f'Entire Text score for {object_name} on {news_vendor}')
+    plot_2.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
+    filepath = "plot_2.png"
+    plt.savefig(filepath)
+    neptune_run[f"build/{news_vendor}-full-text"].upload(filepath)
+    plot_3 = scores_graph.plot(x="date", y=['compound', 'compound_s'],
+                               kind="line", figsize=(15, 6),
+                               title=f'Simple Metric Comparison for {object_name} on {news_vendor}')
+    plot_3.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m'))
+    filepath = f'data/output_plots/simple_model_{object_name}_{news_vendor}.png'
+    plt.savefig(filepath)
+    neptune_run[f"build/{news_vendor}-Model-Comparison"].upload(filepath)
+
+    plot_stats(scores_graph, news_vendor)
+
+    return scores_graph
+
+
+def print_max_min_articles(scores_graph, corpus):
+    best_article_s = scores_graph["compound_s"].argmax()
+    worse_article_s = scores_graph["compound_s"].argmin()
+    best_article = scores_graph["compound"].argmax()
+    worse_article = scores_graph["compound"].argmin()
+    worse_s = corpus.iloc[worse_article_s]
+    best_s = corpus.iloc[best_article_s]
+    worse = corpus.iloc[worse_article]
+    best = corpus.iloc[best_article]
+    print(f"Best Article Title: {best['title']}")
+    print(f"Worst Article Title: {worse['title']}")
+    print(f"Best_s Article Title: {best_s['title']}")
+    print(f"Worst_s Article Title: {worse_s['title']}")
 
 
 def text_sentence_nltk_handler(object_name, news_vendor, corpus, output_directory="data/output_data"):
@@ -109,6 +157,7 @@ def get_text_score(text_sent, word, normalized=False):
             relevant_corpus.append(sent)
             curr_score = nltk_analyze(sent)
             scores.append(curr_score)
+         #   num_of_sentences += 1
 
             total_score["neg_s"] += curr_score["neg"]
             total_score["neu_s"] += curr_score["neu"]
@@ -121,9 +170,9 @@ def get_text_score(text_sent, word, normalized=False):
                 if math.fabs(curr_score["compound"]) > normalizing_threshold:
                     total_score["compound_s"] += curr_score["compound"]
                     compound_count += 1
-    total_score["neg_s"] = total_score["neg_s"] / num_of_sentences
-    total_score["neu_s"] = total_score["neu_s"] / num_of_sentences
-    total_score["pos_s"] = total_score["pos_s"] / num_of_sentences
+    total_score["neg_s"] = total_score["neg_s"] / max(num_of_sentences, 1)
+    total_score["neu_s"] = total_score["neu_s"] / max(num_of_sentences, 1)
+    total_score["pos_s"] = total_score["pos_s"] / max(num_of_sentences, 1)
     if not normalized:
         total_score["compound_s"] = total_score["compound_s"] / \
             num_of_sentences
@@ -133,12 +182,12 @@ def get_text_score(text_sent, word, normalized=False):
                 compound_count
         else:
             total_score["compound_s"] = 0
-    return relevant_corpus, scores, total_score
+    return relevant_corpus, scores, total_score, num_of_sentences
 
 
 def calc_scores_on_corpus(corpus, name, normalized=False):
-    text_score_df = pd.DataFrame(
-        columns=['title', 'date', 'text_score', 'sentences_score'])
+    text_score_df = pd.DataFrame(columns=[
+                                 'title', 'date', 'text', 'text_score', 'sentences_score', 'num_of_sentences'])
     for index, row in corpus.iterrows():
         # for row in corpus:
         text = row["text"]
@@ -148,11 +197,11 @@ def calc_scores_on_corpus(corpus, name, normalized=False):
         # seperate to sentences
         text_sent = sentences_split(text)
         # get score
-        relevant_text, relevant_scores, total_score = get_text_score(
+        relevant_text, relevant_scores, total_score, num_of_sentences = get_text_score(
             text_sent, name, normalized)
         # save row to df
         df = pd.DataFrame(
-            {"index": [index], "title": [row["title"]], "date": [row['date']], "text_score": [whole_text_score],
+            {"index": [index], "title": [row["title"]], "text": [row["text"]], "num_of_sentences": [num_of_sentences], "date": [row['date']], "text_score": [whole_text_score],
              "sentences_score": [total_score]})
         text_score_df = text_score_df.append(df)
 
