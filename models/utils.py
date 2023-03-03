@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import warnings
+from models.plot_stats import plot_stats
 
 
 def run_pipeline(eda_func, score_func, object_name, news_vendor, corpus, file_path):
@@ -45,6 +46,8 @@ def plot_graphs(scores, object_name, news_vendor):
     filepath = f'data/output_plots/simple_model_{object_name}_{news_vendor}.png'
     plt.savefig(filepath)
     neptune_run[f"build/{news_vendor}-Model-Comparison"].upload(filepath)
+
+    plot_stats(scores_graph, news_vendor)
 
     return scores_graph
 
