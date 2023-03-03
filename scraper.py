@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 from sys import argv
 
-d = pd.read_csv('data/fox-articles-Netanyahu.csv')
+d = pd.read_csv('data/fox-articles-trump.csv')
 pass
 
 
@@ -28,7 +28,8 @@ def get_the_f_time(time_string):
         time_string = (time_string[:colonIndex] +
                        '0' + time_string[colonIndex:])
 
-    time_string = time_string.replace('Published', '')
+    time_string = time_string.replace('Published ', '')
+    time_string = time_string.replace('Updated on ', '')
     time_string = time_string.strip()
 
     return datetime.strptime(time_string, "%B %d, %Y %I:%M%p")
@@ -291,8 +292,8 @@ if __name__ == "__main__":
         news_scraper.get_articles().to_csv()
 
 
-source = 'fox'
-news_scraper = sources[source]("netanyahu", "2021/01/01",).get_articles()
+source = 'cnn'
+news_scraper = sources[source]("trump", "2021/01/01",).get_articles()
 
 print("saving to csv")
 news_scraper.to_csv()
