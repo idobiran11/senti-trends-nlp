@@ -35,12 +35,6 @@ def get_the_f_time(time_string):
     return datetime.strptime(time_string, "%B %d, %Y %I:%M%p")
 
 
-object_name = 'Netanyahu'
-
-start_date = '20220301'  # YYYYMMDD
-end_date = '20230103'  # YYYYMMDD
-
-
 def get_json(url, params={}):
     res = get(url, params=params)
     if (res.status_code != 200):
@@ -291,23 +285,22 @@ if __name__ == "__main__":
             exit(1)
         news_scraper.get_articles().to_csv()
 
+    source = 'cnn'
+    news_scraper = sources[source]("trump", "2021/01/01",).get_articles()
 
-source = 'cnn'
-news_scraper = sources[source]("trump", "2021/01/01",).get_articles()
-
-print("saving to csv")
-news_scraper.to_csv()
-print('waiting a bit to make sure', end='', )
-for i in range(4):
-    print('.', end='')
-    sleep(0.5)
-    print('')
-print("trying to read csv")
-try:
-    d = pd.read_csv(f'data/{source}-articles-netanyahu.csv')
-    if (not d.empty):
-        print("ido ze oved!!")
-    else:
+    print("saving to csv")
+    news_scraper.to_csv()
+    print('waiting a bit to make sure', end='', )
+    for i in range(4):
+        print('.', end='')
+        sleep(0.5)
+        print('')
+    print("trying to read csv")
+    try:
+        d = pd.read_csv(f'data/{source}-articles-netanyahu.csv')
+        if (not d.empty):
+            print("ido ze oved!!")
+        else:
+            print("ido ata zodek!!")
+    except:
         print("ido ata zodek!!")
-except:
-    print("ido ata zodek!!")

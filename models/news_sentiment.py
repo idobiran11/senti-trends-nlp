@@ -1,10 +1,10 @@
+from models.utils import calc_sent_norm_ccore
 from NewsSentiment import TargetSentimentClassifier
 from nltk.tokenize import sent_tokenize
 from numpy import tanh
 from models.utils import run_pipeline
 import pandas as pd
 tsc = TargetSentimentClassifier()
-
 
 # {'neg_s': 0.01972727272727273, 'neu_s': 0.15081818181818185, 'pos_s': 0.011272727272727273, 'compound_s': -0.02520454545454546}
 
@@ -13,7 +13,7 @@ def classify(corpus, name):
     text_classification_df = pd.DataFrame(
         columns=['title', 'date', 'pos', 'neg', 'neu'])
     name = name.lower()
-    for index, row in corpus.iloc[:100].iterrows():
+    for index, row in corpus.iterrows():
         text = row["text"].lower()
         var, label = classify_sent(text, name)
         df = pd.DataFrame({
@@ -120,10 +120,6 @@ def get_sent_score(text, name):
     get a word and text splitted to sentences.
     return list of sentences containing the word, each sentece score and text total score
     """
-    def normalziation(num_r, num_t): return min(1, 0.5 + 8 * (num_r / num_t))
-
-    def calc_ccore(score, num_r, num_t): return ((score / num_r) *
-                                                 normalziation(num_r, num_t))
     relevant_corpus = []
     scores = []
     total_score = {'neg_s': 0.0, 'neu_s': 0.0, 'pos_s': 0.0, 'compound_s': 0.0}
@@ -156,13 +152,13 @@ def get_sent_score(text, name):
             votes[max(curr_score.items(), key=lambda item: item[1])[0]] += 1
 
     if num_of_relevant > 0:
-        total_score["neg_s"] = calc_ccore(
+        total_score["neg_s"] = calc_sent_norm_ccore(
             total_score["neg_s"], num_of_relevant, num_of_sentences)
-        total_score["neu_s"] = calc_ccore(
+        total_score["neu_s"] = calc_sent_norm_ccore(
             total_score["neu_s"], num_of_relevant, num_of_sentences)
-        total_score["pos_s"] = calc_ccore(
+        total_score["pos_s"] = calc_sent_norm_ccore(
             total_score["pos_s"], num_of_relevant, num_of_sentences)
-        total_score["compound_s"] = calc_ccore(
+        total_score["compound_s"] = calc_sent_norm_ccore(
             total_score["compound_s"], num_of_relevant, num_of_sentences)
 
     return max(votes.items(), key=lambda item: item[1])[0], total_score, num_of_relevant

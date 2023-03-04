@@ -7,6 +7,7 @@ class ModelNames:
     NLTK = "nltk"
     NORM_NLTK = "normalized_nltk"
     NEWS_SENTIMENT = "news_sentiment"
+    SENT_NORM_NLTK = "sent_normalized_nltk"
 
 
 @dataclass(frozen=True)
@@ -21,3 +22,9 @@ class SourceNames:
     FOX = "fox"
     NYT = "nyt"
     WSJ = "wsj"
+
+
+class NormalizationType(Enum):
+    NONE = 1
+    COMPOUND = 2
+    OCCURENCES = 3

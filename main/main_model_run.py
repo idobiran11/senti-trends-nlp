@@ -15,7 +15,7 @@ from sklearn import metrics
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from models.simple_model_notebook import text_sentence_nltk_handler, norm_text_sentence_nltk_handler
+from models.simple_model_notebook import text_sentence_nltk_handler, norm_text_sentence_nltk_handler, sent_norm_text_sentence_nltk_handler
 from preprocess.coreference_resolution import coref_preprocess, no_preprocess
 from utils.constants import ModelNames, PreprocessNames, SourceNames
 from utils.config_neptune import neptune_run, neptune
@@ -88,6 +88,8 @@ class AlgoRun:
             self.model_function = text_sentence_nltk_handler
         elif self.model_name == ModelNames.NORM_NLTK:
             self.model_function = norm_text_sentence_nltk_handler
+        elif self.model_name == ModelNames.SENT_NORM_NLTK:
+            self.model_function = sent_norm_text_sentence_nltk_handler
         elif self.model_name == ModelNames.NEWS_SENTIMENT:
             self.model_function = news_sentiment_handler
         else:
