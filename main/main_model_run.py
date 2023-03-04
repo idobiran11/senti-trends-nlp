@@ -43,9 +43,9 @@ def create_logger():
 logger = create_logger()
 
 
-def e2e_handler(object_name: str, left_news_vendor: str, right_news_vendor: str, model: str, preprocess: str):
+def e2e_handler(object_name: str, left_news_vendor: str, right_news_vendor: str, model: str, preprocess: str, second_object_name: str = None):
     algo_run = AlgoRun(object_name, left_news_vendor,
-                       right_news_vendor, model, preprocess)
+                       right_news_vendor, model, preprocess, second_object_name)
     left_input_file = f'{left_news_vendor}-articles-{object_name}.csv'
     right_input_file = f'{right_news_vendor}-articles-{object_name}.csv'
     left_preprocessed_df = algo_run.preprocess_function(news_vendor=left_news_vendor, object_name=object_name,
@@ -53,20 +53,21 @@ def e2e_handler(object_name: str, left_news_vendor: str, right_news_vendor: str,
     right_preprocessed_df = algo_run.preprocess_function(news_vendor=right_news_vendor, object_name=object_name,
                                                          input_csv_name=right_input_file)
     left_df = algo_run.model_function(object_name=object_name, news_vendor=left_news_vendor,
-                                      corpus=left_preprocessed_df)
+                                      corpus=left_preprocessed_df, second_object=second_object_name)
     right_df = algo_run.model_function(object_name=object_name, news_vendor=right_news_vendor,
-                                       corpus=right_preprocessed_df)
+                                       corpus=right_preprocessed_df, second_object=second_object_name)
 
     print_create_eval_plots(object_name, left_news_vendor,
                             right_news_vendor, model, left_df, right_df)
+
     neptune_run.stop()
 
 
 class AlgoRun:
 
-    def __init__(self, object_name: str, left_news_vendor: str, right_news_vendor: str, model: str, preprocess: str):
+    def __init__(self, object_name: str, left_news_vendor: str, right_news_vendor: str, model: str, preprocess: str, second_object: str):
         self.initialize_neptune_run(object_name, left_news_vendor, right_news_vendor, model,
-                                    preprocess, neptune_run)
+                                    preprocess, second_object, neptune_run)
         self.object_name = object_name
         if left_news_vendor not in SourceNames.__dict__.values():
             raise Exception("Non existent news vendor: " + left_news_vendor)
@@ -94,9 +95,10 @@ class AlgoRun:
 
     @ staticmethod
     def initialize_neptune_run(object_name: str, left_news_vendor: str, right_news_vendor: str, model: str,
-                               preprocess: str, run):
+                               preprocess: str, second_object: str, run):
 
         run['object_name'] = object_name
+        run['second_object_name'] = second_object
         run['left_news_vendor'] = left_news_vendor
         run['right_news_vendor'] = right_news_vendor
         run['model'] = model
@@ -263,4 +265,4 @@ def purity_score(y_true, y_pred, object_name, left_news_vendor, right_news_vendo
 if __name__ == "__main__":
     e2e_handler(object_name=os.environ.get('OBJECT_NAME'), left_news_vendor=os.environ.get('LEFT_NEWS'),
                 right_news_vendor=os.environ.get('RIGHT_NEWS'), model=os.environ.get('MODEL'),
-                preprocess=os.environ.get("PREPROCESS"))
+                preprocess=os.environ.get("PREPROCESS"), second_object_name=os.environ.get("SECOND_OBJECT"))

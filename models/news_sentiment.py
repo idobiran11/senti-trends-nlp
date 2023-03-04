@@ -1,4 +1,3 @@
-import pandas as pd
 from NewsSentiment import TargetSentimentClassifier
 from nltk.tokenize import sent_tokenize
 from numpy import tanh
@@ -183,8 +182,7 @@ def rm_chars(st):
     return new_st
 
 
-def news_sentiment_handler(object_name, news_vendor, corpus, output_directory="data/output_data"):
-
+def news_sentiment_handler(object_name, news_vendor, corpus, output_directory="data/output_data", second_object=None):
     def eda(df: pd.DataFrame):
 
         df.text = df.text.apply(rm_chars)
@@ -196,4 +194,4 @@ def news_sentiment_handler(object_name, news_vendor, corpus, output_directory="d
 
     return run_pipeline(eda_func=eda,
                         score_func=analyze_corpus, object_name=object_name,
-                        news_vendor=news_vendor, corpus=corpus, file_path=file_path)
+                        news_vendor=news_vendor, corpus=corpus, file_path=file_path, second_object=second_object)
