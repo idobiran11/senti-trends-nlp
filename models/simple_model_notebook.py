@@ -71,16 +71,16 @@ def print_max_min_articles(scores_graph, corpus):
     print(f"Worst_s Article Title: {worse_s['title']}")
 
 
-def text_sentence_nltk_handler(object_name, news_vendor, corpus, output_directory="data/output_data"):
+def text_sentence_nltk_handler(object_name, news_vendor, corpus, output_directory="data/output_data", second_object=None):
     def eda(df): return df.rename(columns={'timestamp': 'date'})
     file_path = f"{output_directory}/{news_vendor}_{object_name}_nltk_sentences_sentiment.csv"
 
     return run_pipeline(eda_func=eda,
                         score_func=calc_scores_on_corpus, object_name=object_name,
-                        news_vendor=news_vendor, corpus=corpus, file_path=file_path)
+                        news_vendor=news_vendor, corpus=corpus, file_path=file_path, second_object=second_object)
 
 
-def norm_text_sentence_nltk_handler(object_name, news_vendor, corpus, output_directory="data/output_data"):
+def norm_text_sentence_nltk_handler(object_name, news_vendor, corpus, output_directory="data/output_data", second_object=None):
     def eda(df): return df.rename(columns={'timestamp': 'date'})
     def score(df, object_name): return calc_scores_on_corpus(
         df, object_name, normalized=True)

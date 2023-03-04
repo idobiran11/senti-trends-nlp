@@ -27,6 +27,7 @@ def coref_preprocess(news_vendor: str, object_name: str, input_csv_name: str,
         for index, row in df.iterrows():
             text = row['text']
             doc = nlp(text)
+            print(f'index: {index}')
             print(doc.spans)
             coref_text = resolve_references(doc, object_name)
             df.at[index, 'text'] = coref_text
