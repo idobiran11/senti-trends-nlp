@@ -37,10 +37,10 @@ def calc_compound_score(pos, neu, neg):
 
 def analyze_corpus(corpus, name):
     name = name.lower()
-
     text_score_df = pd.DataFrame(
         columns=['title', 'date', 'text_score', 'sentences_score'])
-    for index, row in corpus.iloc[:100].iterrows():
+
+    for index, row in corpus.iterrows():
         # for row in corpus:
         text = row["text"]
         text = text.lower()
@@ -49,11 +49,13 @@ def analyze_corpus(corpus, name):
         # seperate to sentences
 
         # get score
-        label, total_score = get_sent_score(
+        label, total_score, num_of_sentences = get_sent_score(
             text, name)
         # save row to df
         df = pd.DataFrame(
             {"index": [index], "title": [row["title"]], "date": [row['date']],
+             "text": [text],
+             "num_of_sentences": num_of_sentences,
              "text_score": [{"pos": 0, "neg": 0, "neu": 0, "compound": 0, }],
              "sentences_score": [total_score], label+'_lbl': [1]})
         for col in ("pos", "neg", "neu"):
@@ -119,10 +121,15 @@ def get_sent_score(text, name):
     get a word and text splitted to sentences.
     return list of sentences containing the word, each sentece score and text total score
     """
+    def normalziation(num_r, num_t): return min(1, 0.5 + 8 * (num_r / num_t))
+
+    def calc_ccore(score, num_r, num_t): return ((score / num_r) *
+                                                 normalziation(num_r, num_t))
     relevant_corpus = []
     scores = []
     total_score = {'neg_s': 0.0, 'neu_s': 0.0, 'pos_s': 0.0, 'compound_s': 0.0}
     text_sent = sent_tokenize(text)
+    num_of_sentences = len(text_sent)
     num_of_relevant = 0
     votes = {
         'neg': 0,
@@ -150,12 +157,16 @@ def get_sent_score(text, name):
             votes[max(curr_score.items(), key=lambda item: item[1])[0]] += 1
 
     if num_of_relevant > 0:
-        total_score["neg_s"] = total_score["neg_s"] / num_of_relevant
-        total_score["neu_s"] = total_score["neu_s"] / num_of_relevant
-        total_score["pos_s"] = total_score["pos_s"] / num_of_relevant
-        total_score["compound_s"] = total_score["compound_s"] / num_of_relevant
+        total_score["neg_s"] = calc_ccore(
+            total_score["neg_s"], num_of_relevant, num_of_sentences)
+        total_score["neu_s"] = calc_ccore(
+            total_score["neu_s"], num_of_relevant, num_of_sentences)
+        total_score["pos_s"] = calc_ccore(
+            total_score["pos_s"], num_of_relevant, num_of_sentences)
+        total_score["compound_s"] = calc_ccore(
+            total_score["compound_s"], num_of_relevant, num_of_sentences)
 
-    return max(votes.items(), key=lambda item: item[1])[0], total_score
+    return max(votes.items(), key=lambda item: item[1])[0], total_score, num_of_relevant
 
 # df = pd.read_csv("data/fox-articles-netanyahu.csv")
 
@@ -173,6 +184,7 @@ def rm_chars(st):
 
 
 def news_sentiment_handler(object_name, news_vendor, corpus, output_directory="data/output_data"):
+
     def eda(df: pd.DataFrame):
 
         df.text = df.text.apply(rm_chars)

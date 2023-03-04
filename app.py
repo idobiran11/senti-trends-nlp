@@ -4,4 +4,4 @@ from models.news_sentiment import infer
 
 e2e_handler(object_name='trump', left_news_vendor=SourceNames.CNN,
             right_news_vendor=SourceNames.FOX, model=ModelNames.NEWS_SENTIMENT,
-            preprocess=PreprocessNames.WITHOUT)
+            preprocess=PreprocessNames.COREF)
