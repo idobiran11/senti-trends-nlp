@@ -165,9 +165,8 @@ def rm_chars(st):
     for i, char in enumerate(st):
         if char in ('\n', '\xa0'):
             continue
-        elif (i < len(st) - 1):
-            if (char == ' ' and st[i+1] == ' '):
-                continue
+        elif (i < len(st) - 1) and (char == ' ' and st[i+1] == ' '):
+            continue
         else:
             new_st += char
     return new_st
