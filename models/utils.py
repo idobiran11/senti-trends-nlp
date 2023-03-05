@@ -19,7 +19,8 @@ def run_pipeline(eda_func, score_func, object_name, news_vendor, corpus, file_pa
         scores_graph_2 = plot_graphs(scores_2, object_name, news_vendor)
         scores_graph_2.set_index('index')
         print_max_min_articles(scores_graph_2, corpus)
-        compare_plots(object_name, second_object, scores_graph, scores_graph_2, news_vendor)
+        compare_plots(object_name, second_object, scores_graph,
+                      scores_graph_2, news_vendor)
     scores_graph.to_csv(file_path, index=False)
     neptune_run[f'eval/{news_vendor}_sentiment'].upload(file_path)
     return scores_graph
@@ -73,15 +74,19 @@ def print_max_min_articles(scores_graph, corpus):
 
 
 def compare_plots(object_name, second_object, scores_graph, scores_graph_2, news_vendor):
-    scores_graph = scores_graph.rename(columns={'compound_s': f'{object_name}_compound_s'})
-    scores_graph_2 = scores_graph_2.rename(columns={'compound_s': f'{second_object}_compound_s'})
+    scores_graph = scores_graph.rename(
+        columns={'compound_s': f'{object_name}_compound_s'})
+    scores_graph_2 = scores_graph_2.rename(
+        columns={'compound_s': f'{second_object}_compound_s'})
     merged_df = pd.merge(scores_graph, scores_graph_2, on='title', how='left')
-    merged_df = merged_df.drop(merged_df[merged_df[f'{second_object}_compound_s'] == 0].index)
+    merged_df = merged_df.drop(
+        merged_df[merged_df[f'{second_object}_compound_s'] == 0].index)
     # add a column to indicate which value is larger
     merged_df['larger'] = merged_df[f'{object_name}_compound_s'] > merged_df[f'{second_object}_compound_s']
 
     # plot the 'a' and 'b' columns as lines
-    ax = merged_df[[f'{object_name}_compound_s', f'{second_object}_compound_s']].plot(kind='line')
+    ax = merged_df[[f'{object_name}_compound_s',
+                    f'{second_object}_compound_s']].plot(kind='line')
 
     # add labels to the plot
     ax.set_xlabel('Row')
@@ -91,9 +96,11 @@ def compare_plots(object_name, second_object, scores_graph, scores_graph_2, news
     # add markers to indicate which value is larger
     for i, row in merged_df.iterrows():
         if row['larger']:
-            ax.scatter(i, row[f'{object_name}_compound_s'], marker='^', color='green')
+            ax.scatter(i, row[f'{object_name}_compound_s'],
+                       marker='^', color='green')
         else:
-            ax.scatter(i, row[f'{second_object}_compound_s'], marker='v', color='red')
+            ax.scatter(i, row[f'{second_object}_compound_s'],
+                       marker='v', color='red')
 
     filepath = f'{news_vendor}-compare-{object_name}-{second_object}'
     plt.savefig(filepath)
@@ -102,7 +109,16 @@ def compare_plots(object_name, second_object, scores_graph, scores_graph_2, news
     plt.show()
 
     # calculate the percentage where 'a' is larger
-    pct_a_larger = (merged_df[f'{object_name}_compound_s'] > merged_df[f'{second_object}_compound_s']).mean() * 100
+    pct_a_larger = (merged_df[f'{object_name}_compound_s'] >
+                    merged_df[f'{second_object}_compound_s']).mean() * 100
 
     # print the percentage
     print(f'{pct_a_larger:.2f}% of rows where {object_name} is larger than {second_object}')
+
+
+def normalziation(num_r, num_t):
+    return min(1, 0.5 + 8 * (num_r / num_t))
+
+
+def calc_sent_norm_ccore(score, num_r, num_t):
+    return ((score / num_r) * normalziation(num_r, num_t))

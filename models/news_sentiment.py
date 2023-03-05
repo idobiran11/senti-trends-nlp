@@ -1,10 +1,10 @@
+from models.utils import calc_sent_norm_ccore
 from NewsSentiment import TargetSentimentClassifier
 from nltk.tokenize import sent_tokenize
 from numpy import tanh
 from models.utils import run_pipeline
 import pandas as pd
 tsc = TargetSentimentClassifier()
-
 
 # {'neg_s': 0.01972727272727273, 'neu_s': 0.15081818181818185, 'pos_s': 0.011272727272727273, 'compound_s': -0.02520454545454546}
 
@@ -13,7 +13,7 @@ def classify(corpus, name):
     text_classification_df = pd.DataFrame(
         columns=['title', 'date', 'pos', 'neg', 'neu'])
     name = name.lower()
-    for index, row in corpus.iloc[:100].iterrows():
+    for index, row in corpus.iterrows():
         text = row["text"].lower()
         var, label = classify_sent(text, name)
         df = pd.DataFrame({
@@ -36,10 +36,10 @@ def calc_compound_score(pos, neu, neg):
 
 def analyze_corpus(corpus, name):
     name = name.lower()
-
     text_score_df = pd.DataFrame(
         columns=['title', 'date', 'text_score', 'sentences_score'])
-    for index, row in corpus.iloc[:100].iterrows():
+
+    for index, row in corpus.iterrows():
         # for row in corpus:
         text = row["text"]
         text = text.lower()
@@ -48,11 +48,13 @@ def analyze_corpus(corpus, name):
         # seperate to sentences
 
         # get score
-        label, total_score = get_sent_score(
+        label, total_score, num_of_sentences = get_sent_score(
             text, name)
         # save row to df
         df = pd.DataFrame(
             {"index": [index], "title": [row["title"]], "date": [row['date']],
+             "text": [text],
+             "num_of_sentences": num_of_sentences,
              "text_score": [{"pos": 0, "neg": 0, "neu": 0, "compound": 0, }],
              "sentences_score": [total_score], label+'_lbl': [1]})
         for col in ("pos", "neg", "neu"):
@@ -122,6 +124,7 @@ def get_sent_score(text, name):
     scores = []
     total_score = {'neg_s': 0.0, 'neu_s': 0.0, 'pos_s': 0.0, 'compound_s': 0.0}
     text_sent = sent_tokenize(text)
+    num_of_sentences = len(text_sent)
     num_of_relevant = 0
     votes = {
         'neg': 0,
@@ -149,12 +152,16 @@ def get_sent_score(text, name):
             votes[max(curr_score.items(), key=lambda item: item[1])[0]] += 1
 
     if num_of_relevant > 0:
-        total_score["neg_s"] = total_score["neg_s"] / num_of_relevant
-        total_score["neu_s"] = total_score["neu_s"] / num_of_relevant
-        total_score["pos_s"] = total_score["pos_s"] / num_of_relevant
-        total_score["compound_s"] = total_score["compound_s"] / num_of_relevant
+        total_score["neg_s"] = calc_sent_norm_ccore(
+            total_score["neg_s"], num_of_relevant, num_of_sentences)
+        total_score["neu_s"] = calc_sent_norm_ccore(
+            total_score["neu_s"], num_of_relevant, num_of_sentences)
+        total_score["pos_s"] = calc_sent_norm_ccore(
+            total_score["pos_s"], num_of_relevant, num_of_sentences)
+        total_score["compound_s"] = calc_sent_norm_ccore(
+            total_score["compound_s"], num_of_relevant, num_of_sentences)
 
-    return max(votes.items(), key=lambda item: item[1])[0], total_score
+    return max(votes.items(), key=lambda item: item[1])[0], total_score, num_of_relevant
 
 # df = pd.read_csv("data/fox-articles-netanyahu.csv")
 
