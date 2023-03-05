@@ -173,13 +173,17 @@ def get_text_score(text_sent, word, normalized=NormalizationType.NONE):
 
 def calc_scores_on_corpus(corpus, name, normalized=False):
     text_score_df = pd.DataFrame(columns=[
-                                 'title', 'date', 'text', 'text_score', 'sentences_score', 'num_of_sentences'])
+                                 'title', 'date', 'text', 'text_score', 'sentences_score', 'title_score', 'num_of_sentences'])
     for index, row in corpus.iterrows():
         # for row in corpus:
         text = row["text"]
         text = text.lower()
         # calc whole text score
         whole_text_score = nltk_analyze(text)
+
+        # title score
+        title_score = nltk_analyze(row["title"])
+
         # seperate to sentences
         text_sent = sentences_split(text)
         # get score
@@ -188,7 +192,7 @@ def calc_scores_on_corpus(corpus, name, normalized=False):
         # save row to df
         df = pd.DataFrame(
             {"index": [index], "title": [row["title"]], "text": [row["text"]], "num_of_sentences": [num_of_sentences], "date": [row['date']], "text_score": [whole_text_score],
-             "sentences_score": [total_score]})
+             "sentences_score": [total_score], "title_score": [title_score]})
         text_score_df = text_score_df.append(df)
 
     return text_score_df
