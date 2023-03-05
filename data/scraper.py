@@ -10,7 +10,7 @@ d = pd.read_csv('data/fox-articles-trump.csv')
 pass
 
 
-def get_the_f_time(time_string):
+def get_the_bloody_time(time_string):
     original = time_string
     time_string = time_string.strip()
     time_string = time_string.strip('\n')
@@ -161,7 +161,7 @@ class fox_scraper(scraper):
         if not temp:
             print(" -- skipping article, no article-date")
             return None, None
-        date = get_the_f_time(temp.text)
+        date = get_the_bloody_time(temp.text)
         return text, date
 
     def _is_valid(self, article):
@@ -275,7 +275,7 @@ if __name__ == "__main__":
         print("Usage: python scraper.py <source> <object_name> <start_date>")
         print("Example: python scraper.py netanyahu 2023/01/01")
     else:
-        source, object_name, start_date, end_date = argv[1:]
+        source, object_name, start_date = argv[1:]
 
         if source in sources:
             news_scraper = sources[source](object_name, start_date)
@@ -284,6 +284,7 @@ if __name__ == "__main__":
                 f"source {source} not supported. use one of {sources.keys()}")
             exit(1)
         news_scraper.get_articles().to_csv()
+        exit(0)
 
     source = 'cnn'
     news_scraper = sources[source]("trump", "2021/01/01",).get_articles()
