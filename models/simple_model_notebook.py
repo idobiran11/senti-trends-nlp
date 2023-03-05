@@ -63,7 +63,7 @@ def sent_norm_text_sentence_nltk_handler(object_name, news_vendor, corpus, outpu
     def eda(df): return df.rename(columns={'timestamp': 'date'})
     def score(df, object_name): return calc_scores_on_corpus(
         df, object_name, normalized=NormalizationType.COMPOUND)
-    file_path = f"{output_directory}/{news_vendor}_{object_name}_normalized_nltk_sentences_sentiment.csv"
+    file_path = f"{output_directory}/{news_vendor}_{object_name}_sent_normalized_nltk_sentences_sentiment.csv"
     return run_pipeline(eda_func=eda,
                         score_func=score, object_name=object_name,
                         news_vendor=news_vendor, corpus=corpus, file_path=file_path)
@@ -174,7 +174,7 @@ def get_text_score(text_sent, word, normalized=NormalizationType.NONE):
 def calc_scores_on_corpus(corpus, name, normalized=False):
     text_score_df = pd.DataFrame(columns=[
                                  'title', 'date', 'text', 'text_score', 'sentences_score', 'title_score', 'num_of_sentences'])
-    for index, row in corpus.iterrows():
+    for index, row in corpus.iloc[:200].iterrows():
         # for row in corpus:
         text = row["text"]
         text = text.lower()
